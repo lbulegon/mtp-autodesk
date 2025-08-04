@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, ipcMain } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain, dialog } from 'electron';
 import path from 'path';
 
 let mainWindow: BrowserWindow | null = null;
@@ -7,6 +7,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    frame: true, // barra padrão
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -17,11 +18,38 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+
+  // Menu personalizado com confirmação para sair
+  const template = [
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Exit',
+          click: async () => {
+            const response = await dialog.showMessageBox(mainWindow!, {
+              type: 'question',
+              buttons: ['Yes', 'No'],
+              defaultId: 1,
+              title: 'Confirm Exit',
+              message: 'Do you really want to exit the application?',
+            });
+
+            if (response.response === 0) {
+              app.quit();
+            }
+          },
+        },
+      ],
+    },
+  ];
+
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
 }
 
 app.whenReady().then(() => {
   createWindow();
-  Menu.setApplicationMenu(null);
 
   app.on('activate', () => {
     if (mainWindow === null) createWindow();
@@ -32,20 +60,4 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
-});
-
-ipcMain.on('window-minimize', () => {
-  mainWindow!.minimize();
-});
-
-ipcMain.on('window-maximize', () => {
-  if (mainWindow!.isMaximized()) {
-    mainWindow!.unmaximize();
-  } else {
-    mainWindow!.maximize();
-  }
-});
-
-ipcMain.on('window-close', () => {
-  mainWindow!.close();
 });

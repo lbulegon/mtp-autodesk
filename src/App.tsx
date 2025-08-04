@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import StatusBar from "./components/StatusBar";
+import CalendarioVagas from "./components/CalendarioVagas";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("operacoes");
@@ -13,26 +14,30 @@ export default function App() {
       {/* Conteúdo principal */}
       <div className="flex flex-col flex-1">
         <main className="flex-1 p-6 overflow-auto">
+          {/* Painel de Operações */}
           {activeTab === "operacoes" && (
             <div>
               <h1 className="text-3xl font-bold mb-4">Painel de Operações</h1>
               <div className="bg-white rounded shadow p-4">
-                <p>Status do Turno: <span className="text-green-600">Ativo</span></p>
+                <p>
+                  Status do Turno:{" "}
+                  <span className="text-green-600">Ativo</span>
+                </p>
                 <p>Rotas Ativas: 2</p>
                 <p>Pedidos Pendentes: 5</p>
               </div>
             </div>
           )}
 
+          {/* Minhas Vagas */}
           {activeTab === "vagas" && (
             <div>
               <h1 className="text-3xl font-bold mb-4">Minhas Vagas</h1>
-              <div className="bg-white rounded shadow p-4">
-                <p>Você está inscrito em 3 vagas para hoje.</p>
-              </div>
+              <CalendarioVagas />
             </div>
           )}
 
+          {/* Chat com Estabelecimento */}
           {activeTab === "chat-estab" && (
             <div>
               <h1 className="text-3xl font-bold mb-4">Chat com Estabelecimento</h1>
@@ -42,6 +47,7 @@ export default function App() {
             </div>
           )}
 
+          {/* Chat com Central */}
           {activeTab === "chat-central" && (
             <div>
               <h1 className="text-3xl font-bold mb-4">Chat com Central</h1>
@@ -51,6 +57,7 @@ export default function App() {
             </div>
           )}
 
+          {/* Configurações */}
           {activeTab === "config" && (
             <div>
               <h1 className="text-3xl font-bold mb-4">Configurações</h1>
