@@ -10,10 +10,12 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
+    const defaultMenu = Menu.getApplicationMenu();
+
   });
 
   // Carrega um arquivo HTML simples
- mainWindow.loadFile(path.join(__dirname, "../electron/index.html"));
+  mainWindow.loadFile(path.join(__dirname, "../electron/index.html"));
 
   mainWindow.on("closed", () => {
     mainWindow = null;
