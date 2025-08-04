@@ -1,55 +1,14 @@
 {
   "name": "mtp-autodesk",
   "version": "1.0.0",
-  "description": "MotoPro-AutoDesk - Aplicativo Desktop",
-  "private": true,
-  "main": "electron/main.ts",
+  "main": "dist-electron/main.js",
   "scripts": {
-    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && npm run electron-dev\"",
-    "electron-dev": "tsc -p electron/tsconfig.electron.json && cross-env NODE_ENV=development electron dist-electron/main.js",
-    "build": "vite build && tsc -p tsconfig.electron.json && electron-builder",
-    "preview": "vite preview",
-    "postinstall": "electron-builder install-app-deps"
-  },
-  "build": {
-    "appId": "com.motopro.autodesk",
-    "productName": "MotoPro-AutoDesk",
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "dist/**/*",
-      "electron/**/*"
-    ],
-    "win": {
-      "target": "nsis",
-      "icon": "assets/icon.ico"
-    },
-    "linux": {
-      "target": "AppImage",
-      "icon": "assets/icon.png"
-    }
-  },
-  "dependencies": {
-    "lucide-react": "^0.536.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "build": "tsc -p electron/tsconfig.json",
+    "start": "electron dist-electron/main.js",
+    "dev": "tsc -p electron/tsconfig.json --watch"
   },
   "devDependencies": {
-    "@types/node": "^24.1.0",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.3",
-    "@vitejs/plugin-react": "^4.7.0",
-    "autoprefixer": "^10.4.21",
-    "concurrently": "^9.2.0",
-    "cross-env": "^10.0.0",
-    "electron": "^37.2.5",
-    "electron-builder": "^26.0.12",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17",
-    "ts-node": "^10.9.2",
-    "typescript": "~5.8.3",
-    "vite": "^7.0.4",
-    "wait-on": "^8.0.4"
+    "electron": "^31.0.0",
+    "typescript": "^5.0.0"
   }
 }

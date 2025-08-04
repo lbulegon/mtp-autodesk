@@ -2,12 +2,10 @@
   "compilerOptions": {
     "outDir": "../dist-electron",
     "rootDir": ".",
-    "module": "commonjs",
     "target": "ES2021",
+    "module": "commonjs",
     "strict": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "esModuleInterop": true
   },
   "include": ["./**/*"]
 }
