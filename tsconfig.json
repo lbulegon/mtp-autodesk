@@ -22,5 +22,5 @@
     "noUncheckedSideEffectImports": true,
      "jsx": "react-jsx"  // <-- ADICIONAR ESTA LINHA
   },
-  "include": ["src"]
+  "include": ["src", "electron/tsconfig.electron.json"]
 }

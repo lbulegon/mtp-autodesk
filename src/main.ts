@@ -1,26 +1,53 @@
-import './style.css'
-import './index.css';
+import { app, BrowserWindow, Menu, ipcMain } from 'electron';
+import path from 'path';
 
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.tsx'
+let mainWindow: BrowserWindow | null = null;
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+function createWindow() {
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+    },
+  });
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+  // Carregar URL do Vite
+  mainWindow.loadURL('http://localhost:5173');
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+}
+
+app.whenReady().then(() => {
+  createWindow();
+  Menu.setApplicationMenu(null);
+
+  app.on('activate', () => {
+    if (mainWindow === null) createWindow();
+  });
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+// Handlers seguros usando "!"
+ipcMain.on('window-minimize', () => {
+  mainWindow!.minimize();
+});
+
+ipcMain.on('window-maximize', () => {
+  if (mainWindow!.isMaximized()) {
+    mainWindow!.unmaximize();
+  } else {
+    mainWindow!.maximize();
+  }
+});
+
+ipcMain.on('window-close', () => {
+  mainWindow!.close();
+});
