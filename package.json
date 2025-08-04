@@ -6,7 +6,8 @@
   "main": "electron/main.ts",
   "scripts": {
     "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && npm run electron-dev\"",
-    "electron-dev": "tsc -p tsconfig.electron.json && cross-env NODE_ENV=development electron dist-electron/main.js",
+    "electron-dev": "tsc -p electron/tsconfig.electron.json && cross-env NODE_ENV=development electron dist-electron/main.js",
+
     "build": "vite build && tsc -p tsconfig.electron.json && electron-builder",
     "preview": "vite preview",
     "postinstall": "electron-builder install-app-deps"
