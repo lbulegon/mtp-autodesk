@@ -10,7 +10,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
-    const defaultMenu = Menu.getApplicationMenu();
+
 
   });
 
