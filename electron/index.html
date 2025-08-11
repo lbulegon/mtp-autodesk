@@ -1,10 +1,92 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Electron Simples</title>
-  </head>
-  <body>
-    <h1>Olá do Electron!</h1>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>MotoPro AutoDesk</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="store-badge">
+      <div class="store-icon">🏍</div>
+      <div>
+        <div class="store-name">MotoPro Central</div>
+        <div class="store-open">Aberto</div>
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-label">Pedidos</div>
+        <div class="kpi-value">32</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Entregadores</div>
+        <div class="kpi-value">12</div>
+      </div>
+    </div>
+    <div class="top-right">
+      <button class="icon-btn">⚙️</button>
+      <div class="avatar">LJ</div>
+    </div>
+  </div>
+
+  <!-- Layout principal -->
+  <div class="app">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <button class="side-icon active">🏠</button>
+      <button class="side-icon">📦</button>
+      <button class="side-icon">🏍</button> <!-- Entregadores -->
+      <button class="side-icon">🗂</button> <!-- Vagas -->
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="content">
+      <!-- Coluna esquerda -->
+      <div class="left">
+        <!-- Botão Aceite automático -->
+        <div class="auto-accept">
+          <span>Aceite automático de pedidos</span>
+          <button id="btnAuto" class="btn-auto off">OFF</button>
+        </div>
+
+        <!-- Lista exemplo -->
+        <div class="section">
+          <div class="section-title">Pedidos Pendentes</div>
+          <div class="list">
+            <div class="card">
+              <div class="row-top">
+                <span class="order-id">#1023</span>
+                <span class="until">12:30</span>
+              </div>
+              <div class="order-name">Pedido João</div>
+              <div class="badge-status badge-preparo">
+                <div class="dot"></div> Em preparo
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna direita -->
+      <div class="right">
+        <div class="detail empty">
+          Selecione um pedido para ver os detalhes
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Alternar ON/OFF do botão Aceite automático
+    const btnAuto = document.getElementById("btnAuto");
+    btnAuto.addEventListener("click", () => {
+      btnAuto.classList.toggle("off");
+      btnAuto.textContent = btnAuto.classList.contains("off") ? "OFF" : "ON";
+    });
+  </script>
+
+</body>
 </html>
