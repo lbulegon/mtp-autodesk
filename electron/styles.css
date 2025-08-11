@@ -197,3 +197,71 @@ input:checked + .slider:before{transform:translateX(20px)}
   background:#f3f4f6;border:1px solid var(--line);color:#495057;
   padding:4px 8px;border-radius:999px;font-size:12px
 }
+
+
+/* ===== Tooltips (hints) genéricos ===== */
+.has-tip{ position: relative; }
+
+.has-tip[data-tip]::after,
+.has-tip[data-tip]::before{
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+.has-tip[data-tip]::after{
+  content: attr(data-tip);
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translate(-50%, 4px);
+  white-space: nowrap;
+  background: rgba(33,37,41,.95); /* var(--ink) escuro */
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  z-index: 20;
+}
+
+.has-tip[data-tip]::before{
+  content: "";
+  left: 50%;
+  bottom: 100%;
+  transform: translate(-50%, 8px);
+  border: 6px solid transparent;
+  border-top-color: rgba(33,37,41,.95);
+  z-index: 19;
+}
+
+.has-tip:hover[data-tip]::after,
+.has-tip:hover[data-tip]::before{
+  opacity: 1;
+  transform: translate(-50%, 0); /* sobe suavemente */
+}
+
+/* Variação: tooltip à direita (opcional) */
+.has-tip.tip-right[data-tip]::after{
+  left: calc(100% + 8px);
+  bottom: 50%; transform: translate(0, 50%);
+}
+.has-tip.tip-right[data-tip]::before{
+  left: 100%; bottom: 50%;
+  transform: translate(0, 50%);
+  border: 6px solid transparent;
+  border-left-color: rgba(33,37,41,.95);
+}
+
+/* Variação: tooltip à esquerda (opcional) */
+.has-tip.tip-left[data-tip]::after{
+  left: auto; right: calc(100% + 8px);
+  bottom: 50%; transform: translate(0, 50%);
+}
+.has-tip.tip-left[data-tip]::before{
+  left: auto; right: 100%; bottom: 50%;
+  transform: translate(0, 50%);
+  border: 6px solid transparent;
+  border-right-color: rgba(33,37,41,.95);
+}

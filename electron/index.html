@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <title>MotoPro AutoDesk</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="config.js"></script>
+  <script src="autoAceite.js"></script>
 </head>
 <body>
 
@@ -35,12 +37,14 @@
   <!-- Layout principal -->
   <div class="app">
     <!-- Sidebar -->
-    <div class="sidebar">
-      <button class="side-icon active">🏠</button>
-      <button class="side-icon">📦</button>
-      <button class="side-icon">🏍</button> <!-- Entregadores -->
-      <button class="side-icon">🗂</button> <!-- Vagas -->
-    </div>
+    <aside class="sidebar">
+      <button class="side-icon has-tip" data-tip="Pedidos" id="btn-orders">📦</button>
+      <button class="side-icon has-tip" data-tip="Entregadores" id="btn-riders">🛵</button>
+      <button class="side-icon has-tip" data-tip="Vagas" id="btn-vagas">📋</button>
+      <button class="side-icon has-tip" data-tip="Dispositivos" id="btn-devices">📱</button>
+      <button class="side-icon has-tip" data-tip="Configurações" id="btn-settings">⚙️</button>
+    </aside>
+    
 
     <!-- Conteúdo -->
     <div class="content">
