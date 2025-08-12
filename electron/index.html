@@ -1,16 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MotoPro AutoDesk</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="config.js"></script>
-  <script src="autoAceite.js"></script>
-</head>
-<body>
+  <style>
+    /* utilitários locais */
+    .hidden {
+      display: none;
+    }
 
+    /* avatar por iniciais (fallback quando não há foto) */
+    .avatar-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      flex: 0 0 auto;
+    }
+
+    /* grid compacta dentro do painel da direita */
+    .detail .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 1024px) {
+      .detail .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* mini estatística em cards */
+    .mini {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .mini .k {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .mini .v {
+      font-weight: 700;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
   <!-- Topbar -->
-  <div class="topbar">
+  <header class="topbar">
     <div class="store-badge">
       <div class="store-icon">🏍</div>
       <div>
@@ -20,77 +70,641 @@
     </div>
     <div class="kpis">
       <div class="kpi">
-        <div class="kpi-label">Pedidos</div>
-        <div class="kpi-value">32</div>
+        <div class="kpi-label">Hoje</div>
+        <div class="kpi-value">125</div>
       </div>
       <div class="kpi">
-        <div class="kpi-label">Entregadores</div>
-        <div class="kpi-value">12</div>
+        <div class="kpi-label">Mês</div>
+        <div class="kpi-value">3.452</div>
       </div>
     </div>
     <div class="top-right">
-      <button class="icon-btn">⚙️</button>
-      <div class="avatar">LJ</div>
+      <button class="icon-btn has-tip" data-tip="Ajuda">❓</button>
+      <button class="icon-btn has-tip" data-tip="Notificações">🔔</button>
+      <button class="icon-btn has-tip" data-tip="Configurações">⚙️</button>
+      <div class="avatar has-tip" data-tip="Perfil">MP</div>
     </div>
-  </div>
+  </header>
 
-  <!-- Layout principal -->
   <div class="app">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <button class="side-icon has-tip" data-tip="Pedidos" id="btn-orders">📦</button>
+      <button class="side-icon has-tip active" data-tip="Pedidos" id="btn-orders">📦</button>
       <button class="side-icon has-tip" data-tip="Entregadores" id="btn-riders">🛵</button>
       <button class="side-icon has-tip" data-tip="Vagas" id="btn-vagas">📋</button>
-      <button class="side-icon has-tip" data-tip="Dispositivos" id="btn-devices">📱</button>
-      <button class="side-icon has-tip" data-tip="Configurações" id="btn-settings">⚙️</button>
     </aside>
-    
 
-    <!-- Conteúdo -->
-    <div class="content">
-      <!-- Coluna esquerda -->
-      <div class="left">
-        <!-- Botão Aceite automático -->
-        <div class="auto-accept">
-          <span>Aceite automático de pedidos</span>
-          <button id="btnAuto" class="btn-auto off">OFF</button>
-        </div>
+    <!-- Conteúdo em 2 colunas -->
+    <main class="content">
+      <!-- COLUNA ESQUERDA -->
+      <section class="left">
+        <!-- VIEW: Pedidos -->
+        <div id="left-orders" class="left-view">
+          <div class="auto-accept">
+            <span>Aceite automático de pedidos</span>
+            <button id="btnAuto" class="btn-auto off has-tip" data-tip="Aceite automático desativado">OFF</button>
+          </div>
 
-        <!-- Lista exemplo -->
-        <div class="section">
-          <div class="section-title">Pedidos Pendentes</div>
-          <div class="list">
-            <div class="card">
-              <div class="row-top">
-                <span class="order-id">#1023</span>
-                <span class="until">12:30</span>
+          <div class="search-row">
+            <div class="search">
+              <span class="search-ico">🔎</span>
+              <input id="search" type="text" placeholder="Buscar pedido" />
+            </div>
+            <button class="btn btn-outline has-tip" data-tip="Filtrar pedidos">Filtros</button>
+          </div>
+
+          <section class="section section--scroll section--pendentes">
+            <div class="section-title">Pedidos Pendentes <span class="badge" id="count-pendentes">8</span></div>
+            <div class="list" id="list-pendentes"></div>
+          </section>
+
+          <section class="section section--scroll section--entrega">
+            <div class="section-title">Em entrega <span class="badge" id="count-entrega">2</span></div>
+            <div class="list" id="list-entrega"></div>
+          </section>
+
+          <section class="section section--scroll section--entrega">
+            <div class="section-title">Em entrega <span class="badge" id="count-entrega">2</span></div>
+            <div class="list" id="list-entrega">
+              <div class="card">
+                <div class="row-top"><span class="order-id">#0999</span><span class="order-name">Carlos L.</span></div>
+                <div class="badge-status badge-entrega"><span class="dot"></span> A caminho</div>
               </div>
-              <div class="order-name">Pedido João</div>
-              <div class="badge-status badge-preparo">
-                <div class="dot"></div> Em preparo
+              <div class="card">
+                <div class="row-top"><span class="order-id">#0998</span><span class="order-name">Bia C.</span></div>
+                <div class="badge-status badge-entrega"><span class="dot"></span> A caminho</div>
               </div>
             </div>
+          </section>
+        </div>
+
+        <!-- VIEW: Entregadores -->
+        <div id="left-riders" class="left-view hidden">
+          <h2 class="section-title">Entregadores no turno</h2>
+
+          <div class="riders-list" id="riders-list">
+            <!-- Renderizado via JS (ridersData) -->
+          </div>
+        </div>
+
+        <!-- VIEW: Vagas (placeholder simples) -->
+        <div id="left-vagas" class="left-view hidden">
+          <h2 class="section-title">Gestão de Vagas</h2>
+          <div class="list" id="list-vagas" style="padding:12px;"></div>
+        </div>
+        
+
+      </section>
+
+      <!-- COLUNA DIREITA -->
+      <section class="right">
+        <div class="detail empty" id="detail">Selecione um item para ver detalhes</div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Scripts (opcional: config/autoaceite se usar API real) -->
+  <!-- <script src="config.js"></script>
+  <script src="autoaceite.js"></script> -->
+
+  <script>
+    // --------- Dados de exemplo de entregadores ---------
+    const ridersData = [
+      { id: 11, nome: "João Silva", foto: "", status: "Ativo", entregasTurno: 5, placa: "ABC-1234", telefone: "(11) 99999-1111", rating: 4.8 },
+      { id: 22, nome: "Maria Santos", foto: "", status: "Ocupado", entregasTurno: 3, placa: "XYZ-5678", telefone: "(11) 98888-2222", rating: 4.6 },
+      { id: 33, nome: "Pedro Lima", foto: "", status: "Inativo", entregasTurno: 0, placa: "MTP-2025", telefone: "(11) 97777-3333", rating: 4.1 },
+      { id: 44, nome: "Carla Souza", foto: "https://randomuser.me/api/portraits/women/65.jpg", status: "Ativo", entregasTurno: 7, placa: "JKL-0001", telefone: "(11) 96666-4444", rating: 4.9 },
+    ];
+
+    // --------- Utils: iniciais + cor fixa por nome ---------
+    function initials(name) {
+      return (name || "")
+        .split(/\s+/).slice(0, 2).map(p => p[0]).join("").toUpperCase();
+    }
+    function colorFrom(name) {
+      const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#14b8a6", "#f97316", "#06b6d4"];
+      let sum = 0; for (const c of name) sum = (sum + c.charCodeAt(0)) % 997;
+      return colors[sum % colors.length];
+    }
+
+    // --------- Render lista de entregadores (cards) ---------
+    function renderRidersList() {
+      const list = document.getElementById("riders-list");
+      list.innerHTML = ridersData.map(r => {
+        const hasPhoto = !!r.foto;
+        const avatar = hasPhoto
+          ? `<img src="${r.foto}" alt="${r.nome}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;">`
+          : `<div class="avatar-circle" style="background:${colorFrom(r.nome)}">${initials(r.nome)}</div>`;
+
+        const statusClass = r.status === "Ativo" ? "badge-online"
+          : r.status === "Ocupado" ? "chip"
+            : "badge-offline";
+
+        return `
+        <div class="rider-card has-tip" data-tip="Ver detalhes" data-id="${r.id}" style="cursor:pointer">
+          ${avatar}
+          <div class="rider-info" style="flex:1">
+            <h3 style="margin:0;font-size:15px">${r.nome}</h3>
+            <div class="rider-meta">Placa ${r.placa} • Entregas no turno: <strong>${r.entregasTurno}</strong></div>
+          </div>
+          <div class="${statusClass}">${r.status}</div>
+        </div>`;
+      }).join("");
+
+      // binds de clique -> painel da direita
+      list.querySelectorAll(".rider-card").forEach(card => {
+        card.addEventListener("click", () => {
+          const id = Number(card.getAttribute("data-id"));
+          const rider = ridersData.find(r => r.id === id);
+          if (rider) renderRiderDetail(rider);
+        });
+      });
+    }
+
+    // --------- Render detalhes no painel da direita ---------
+
+    function renderRiderDetail(r) {
+      const box = document.getElementById("detail");
+      box.classList.remove("empty");
+
+      const hasPhoto = !!r.foto;
+      const hero = hasPhoto
+        ? `<img src="${r.foto}" alt="${r.nome}">`
+        : `<div class="rider-hero" style="background:${colorFrom(r.nome)}">${initials(r.nome)}</div>`;
+
+      box.innerHTML = `
+      <div class="rider-header">
+        ${hasPhoto ? `<div class="rider-hero">${hero}</div>` : hero}
+        <div class="rider-title">
+          <div class="rider-name">${r.nome}</div>
+          <div class="rider-badges">
+            <span class="${r.status === 'Ativo' ? 'badge-online' : (r.status === 'Ocupado' ? 'chip' : 'badge-offline')}">${r.status}</span>
+            <span class="badge-ghost">Placa: ${r.placa}</span>
+            <span class="badge-ghost">Tel: ${r.telefone}</span>
           </div>
         </div>
       </div>
 
-      <!-- Coluna direita -->
-      <div class="right">
-        <div class="detail empty">
-          Selecione um pedido para ver os detalhes
+      <div class="actions-bar">
+        <button class="btn-outline">Abrir no painel web</button>
+        <button class="btn-primary">Chamar para entrega</button>
+        <button class="btn btn-soft">Enviar mensagem</button>
+      </div>
+
+      <div class="detail-section">
+        <div class="stat-grid">
+          <div class="stat"><div class="k">Entregas (turno)</div><div class="v">${r.entregasTurno}</div></div>
+          <div class="stat"><div class="k">Avaliação</div><div class="v">⭐ ${r.rating.toFixed(1)}</div></div>
+          <div class="stat"><div class="k">Pontualidade</div><div class="v">96%</div></div>
+          <div class="stat"><div class="k">Taxa aceite</div><div class="v">88%</div></div>
+        </div>
+
+        <div class="info-cards">
+          <div class="info-card">
+            <div class="label">Documento</div>
+            <div class="value">***.***.***-**</div>
+            <div class="label" style="margin-top:6px">CNH</div>
+            <div class="value">AB • Válida</div>
+          </div>
+          <div class="info-card">
+            <div class="label">Veículo</div>
+            <div class="value">Moto • ${r.placa}</div>
+            <div class="label" style="margin-top:6px">Seguro</div>
+            <div class="value">OK</div>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div style="font-weight:800; margin-bottom:6px;">Últimos eventos</div>
+          <div class="item">
+            <div class="dot"></div>
+            <div>
+              <div>Finalizou entrega #4321</div>
+              <div class="when">há 6 min</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="dot"></div>
+            <div>
+              <div>Retirou pedido #4321</div>
+              <div class="when">há 18 min</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="dot"></div>
+            <div>
+              <div>Entrou no turno</div>
+              <div class="when">há 1h 02min</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-actions" style="justify-content:flex-end">
+          <button class="btn-danger">Bloquear</button>
+          <button class="btn-outline">Remover do turno</button>
         </div>
       </div>
-    </div>
-  </div>
+    `;
+    }
 
-  <script>
-    // Alternar ON/OFF do botão Aceite automático
-    const btnAuto = document.getElementById("btnAuto");
-    btnAuto.addEventListener("click", () => {
-      btnAuto.classList.toggle("off");
-      btnAuto.textContent = btnAuto.classList.contains("off") ? "OFF" : "ON";
+
+
+
+
+    // --------- Alternância de views + botão ativo ---------
+    document.addEventListener("DOMContentLoaded", () => {
+      const views = {
+        orders: document.getElementById("left-orders"),
+        riders: document.getElementById("left-riders"),
+        vagas: document.getElementById("left-vagas"),
+      };
+      const buttons = {
+        orders: document.getElementById("btn-orders"),
+        riders: document.getElementById("btn-riders"),
+        vagas: document.getElementById("btn-vagas"),
+      };
+
+      function showView(name) {
+        Object.values(views).forEach(v => v.classList.add("hidden"));
+        views[name].classList.remove("hidden");
+        Object.values(buttons).forEach(b => b.classList.remove("active"));
+        buttons[name].classList.add("active");
+      }
+
+      // eventos
+      buttons.orders.addEventListener("click", () => showView("orders"));
+      buttons.vagas.addEventListener("click", () => showView("vagas"));
+      buttons.riders.addEventListener("click", () => {
+        showView("riders");
+        renderRidersList(); // renderiza quando entra na view
+        // opcional: limpar painel da direita ao trocar
+        document.getElementById("detail").classList.add("empty");
+        document.getElementById("detail").textContent = "Selecione um entregador para ver detalhes";
+      });
+
+      // render inicial da lista de entregadores (se quiser já pronto)
+      // renderRidersList();
+    });
+
+
+
+
+    // ========= DADOS DE EXEMPLO =========
+    const ordersDataPendentes = [
+      {
+        id: 1001, cliente: "Maria Silva", status: "Em preparo",
+        prazo: "12:30", pagamento: "PIX", taxaEntrega: 7.90, subtotal: 52.00, desconto: 5.00,
+        endereco: "Rua das Flores, 123 • Bela Vista", obs: "Sem cebola",
+        itens: [
+          { nome: "Burger Clássico", qtd: 1, preco: 28.00 },
+          { nome: "Batata média", qtd: 1, preco: 12.00 },
+          { nome: "Refrigerante", qtd: 1, preco: 12.00 }
+        ]
+      },
+      {
+        id: 1002, cliente: "João Pereira", status: "Em preparo",
+        prazo: "12:34", pagamento: "Crédito", taxaEntrega: 6.90, subtotal: 39.90, desconto: 0.00,
+        endereco: "Av. Paulista, 555 • Consolação", obs: "",
+        itens: [
+          { nome: "Wrap Frango", qtd: 1, preco: 22.90 },
+          { nome: "Suco Laranja", qtd: 1, preco: 17.00 }
+        ]
+      }
+    ];
+
+    const ordersDataEntrega = [
+      {
+        id: 999, cliente: "Carlos Lima", status: "A caminho",
+        prazo: "13:05", pagamento: "Dinheiro", taxaEntrega: 8.50, subtotal: 61.00, desconto: 0.00,
+        endereco: "R. Itapura, 77 • Moema", obs: "Troco para 100",
+        itens: [
+          { nome: "Combo Família", qtd: 1, preco: 61.00 }
+        ]
+      },
+      {
+        id: 998, cliente: "Beatriz Costa", status: "A caminho",
+        prazo: "13:12", pagamento: "Débito", taxaEntrega: 7.50, subtotal: 42.00, desconto: 2.00,
+        endereco: "R. Vergueiro, 2210 • Vila Mariana", obs: "",
+        itens: [
+          { nome: "Salada Caesar", qtd: 1, preco: 24.00 },
+          { nome: "Água 500ml", qtd: 2, preco: 9.00 },
+          { nome: "Molho extra", qtd: 1, preco: 9.00 }
+        ]
+      }
+    ];
+
+    const vagasData = [
+      {
+        id: 1, titulo: "Turno Almoço", janela: "11:00–15:00", capacidade: 6, ocupadas: 4, local: "Zona Sul",
+        requisitos: ["CNH A válida", "Moto própria", "Seguro OK"]
+      },
+      {
+        id: 2, titulo: "Turno Jantar", janela: "18:00–22:00", capacidade: 8, ocupadas: 7, local: "Zona Leste",
+        requisitos: ["CNH A válida", "Experiência > 6 meses"]
+      }
+    ];
+
+    // ========= HELPERS =========
+    function money(v) { return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }); }
+
+    // ========= RENDER LISTAS (lado esquerdo) =========
+    function renderOrdersLists() {
+      const pend = document.getElementById("list-pendentes");
+      const entr = document.getElementById("list-entrega");
+      const b1 = document.getElementById("count-pendentes");
+      const b2 = document.getElementById("count-entrega");
+
+      b1.textContent = ordersDataPendentes.length;
+      b2.textContent = ordersDataEntrega.length;
+
+      pend.innerHTML = ordersDataPendentes.map(o => `
+      <div class="card order-card" data-oid="${o.id}" style="cursor:pointer">
+        <div class="row-top">
+          <span class="order-id">#${o.id}</span>
+          <span class="order-name">${o.cliente}</span>
+        </div>
+        <div class="badge-status badge-preparo"><span class="dot"></span> ${o.status}</div>
+      </div>
+    `).join("");
+
+      entr.innerHTML = ordersDataEntrega.map(o => `
+      <div class="card order-card" data-oid="${o.id}" style="cursor:pointer">
+        <div class="row-top">
+          <span class="order-id">#${o.id}</span>
+          <span class="order-name">${o.cliente}</span>
+        </div>
+        <div class="badge-status badge-entrega"><span class="dot"></span> ${o.status}</div>
+      </div>
+    `).join("");
+
+      // binds de clique -> detalhe do pedido
+      document.querySelectorAll(".order-card").forEach(el => {
+        el.addEventListener("click", () => {
+          const id = Number(el.getAttribute("data-oid"));
+          const o = ordersDataPendentes.find(x => x.id === id) || ordersDataEntrega.find(x => x.id === id);
+          if (o) renderOrderDetail(o);
+        });
+      });
+    }
+
+    function renderVagasList() {
+      const box = document.getElementById("list-vagas");
+      box.innerHTML = vagasData.map(v => {
+        const restante = Math.max(v.capacidade - v.ocupadas, 0);
+        const statusClass = restante > 0 ? "badge-online" : "badge-offline";
+        const statusTxt = restante > 0 ? `${restante} vagas` : "Lotado";
+        return `
+        <div class="card vaga-card" data-vid="${v.id}" style="cursor:pointer">
+          <div class="row-top">
+            <span class="order-id">${v.titulo}</span>
+            <span class="${statusClass}">${statusTxt}</span>
+          </div>
+          <div class="order-name">${v.janela} • ${v.local}</div>
+        </div>
+      `;
+      }).join("");
+
+      // binds -> detalhe da vaga
+      document.querySelectorAll(".vaga-card").forEach(el => {
+        el.addEventListener("click", () => {
+          const id = Number(el.getAttribute("data-vid"));
+          const v = vagasData.find(x => x.id === id);
+          if (v) renderVagaDetail(v);
+        });
+      });
+    }
+
+    // ========= DETALHES (lado direito) =========
+    function renderOrderDetail(o) {
+      const box = document.getElementById("detail");
+      box.classList.remove("empty");
+
+      const total = o.subtotal + o.taxaEntrega - (o.desconto || 0);
+      const badgeClass = (o.status === "A caminho") ? "badge-entrega" : "badge-preparo";
+
+      box.innerHTML = `
+      <div class="hdr">
+        <div class="title">
+          <strong>Pedido #${o.id}</strong> • ${o.cliente}
+        </div>
+        <div class="meta">
+          <span class="pill"><strong>Status:</strong> ${o.status}</span>
+          <span class="pill"><strong>Pagamento:</strong> ${o.pagamento}</span>
+          <span class="pill"><strong>Prazo:</strong> ${o.prazo}</span>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="addr"><span>📍</span> <div>${o.endereco}</div></div>
+        ${o.obs ? `<div class="chips" style="margin-top:8px"><span class="chip">Obs: ${o.obs}</span></div>` : ""}
+      </div>
+
+      <div class="block items">
+        ${o.itens.map(it => `
+          <div class="item">
+            <div>${it.qtd}× ${it.nome}</div>
+            <div>${money(it.preco)}</div>
+          </div>
+        `).join("")}
+        <div class="item"><div>Subtotal</div><div>${money(o.subtotal)}</div></div>
+        <div class="item"><div>Taxa de entrega</div><div>${money(o.taxaEntrega)}</div></div>
+        ${o.desconto ? `<div class="item"><div>Desconto</div><div>- ${money(o.desconto)}</div></div>` : ""}
+        <div class="item" style="font-weight:700;border-top:1px dashed #ddd">
+          <div>Total</div><div class="price">${money(total)}</div>
+        </div>
+      </div>
+
+      <div class="footer-actions">
+        <div class="badge-status ${badgeClass}"><span class="dot"></span> ${o.status}</div>
+        <div style="flex:1"></div>
+        <button class="btn-outline">Imprimir</button>
+        <button class="btn-primary">Atribuir entregador</button>
+      </div>
+    `;
+    }
+
+    function renderVagaDetail(v) {
+      const box = document.getElementById("detail");
+      box.classList.remove("empty");
+      const restante = Math.max(v.capacidade - v.ocupadas, 0);
+      const livreTxt = restante > 0 ? `${restante} vagas abertas` : "Lotado";
+
+      box.innerHTML = `
+      <div class="hdr">
+        <div class="title">
+          <strong>${v.titulo}</strong> • ${v.janela}
+        </div>
+        <div class="meta">
+          <span class="pill"><strong>Local:</strong> ${v.local}</span>
+          <span class="pill"><strong>Capacidade:</strong> ${v.capacidade}</span>
+          <span class="pill"><strong>Ocupadas:</strong> ${v.ocupadas}</span>
+          <span class="pill"><strong>Status:</strong> ${livreTxt}</span>
+        </div>
+      </div>
+
+      <div class="block">
+        <div style="font-weight:700;margin-bottom:8px">Requisitos</div>
+        <div class="chips">
+          ${v.requisitos.map(r => `<span class="chip">${r}</span>`).join("")}
+        </div>
+      </div>
+
+      <div class="block">
+        <div style="font-weight:700;margin-bottom:8px">Candidatos recentes</div>
+        <div class="rider-card">
+          <div class="thumb" style="display:flex;align-items:center;justify-content:center">👤</div>
+          <div style="flex:1;margin-left:10px">
+            <div class="rider-id">Felipe Andrade</div>
+            <div class="rider-meta">CNH A • Moto OK • Nota 4.7</div>
+          </div>
+          <button class="btn-outline">Ver perfil</button>
+        </div>
+        <div class="rider-card" style="margin-top:8px">
+          <div class="thumb" style="display:flex;align-items:center;justify-content:center">👤</div>
+          <div style="flex:1;margin-left:10px">
+            <div class="rider-id">Aline Sousa</div>
+            <div class="rider-meta">CNH A • Experiência 1 ano • Nota 4.5</div>
+          </div>
+          <button class="btn-outline">Ver perfil</button>
+        </div>
+      </div>
+
+      <div class="footer-actions">
+        <button class="btn-danger">Encerrar vaga</button>
+        <button class="btn-primary">Adicionar entregador</button>
+      </div>
+    `;
+    }
+
+    // ========= INTEGRAÇÃO COM SUAS VIEWS EXISTENTES =========
+    document.addEventListener("DOMContentLoaded", () => {
+      // Render das listas iniciais
+      renderOrdersLists();
+      renderVagasList();
+
+      // Se quiser mostrar um pedido por padrão:
+      // renderOrderDetail(ordersDataPendentes[0]);
     });
   </script>
 
+
+
+<script>
+  // === FIX VAGAS: preenche #list-vagas e mostra detalhes no painel da direita ===
+  document.addEventListener("DOMContentLoaded", () => {
+    const list = document.getElementById("list-vagas");
+    const btnVagas = document.getElementById("btn-vagas");
+    const detail = document.getElementById("detail");
+
+    // Se o container não existir, não fazemos nada
+    if (!list || !btnVagas || !detail) {
+      console.warn("[VAGAS] Elementos não encontrados (#list-vagas / #btn-vagas / #detail).");
+      return;
+    }
+
+    // Dados de exemplo
+    const vagasData = [
+      { id: 1, titulo: "Turno Almoço", janela: "11:00–15:00", capacidade: 6, ocupadas: 4, local: "Zona Sul",
+        requisitos: ["CNH A válida", "Moto própria", "Seguro OK"] },
+      { id: 2, titulo: "Turno Jantar", janela: "18:00–22:00", capacidade: 8, ocupadas: 7, local: "Zona Leste",
+        requisitos: ["CNH A válida", "Experiência > 6 meses"] }
+    ];
+
+    function moneyBR(v){ return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}); }
+
+    // Renderiza os cards de vagas na coluna esquerda
+    function renderVagasList() {
+      list.innerHTML = vagasData.map(v => {
+        const restante = Math.max(v.capacidade - v.ocupadas, 0);
+        const statusClass = restante > 0 ? "badge-online" : "badge-offline";
+        const statusTxt = restante > 0 ? `${restante} vagas` : "Lotado";
+        return `
+          <div class="card vaga-card" data-vid="${v.id}" style="cursor:pointer">
+            <div class="row-top">
+              <span class="order-id">${v.titulo}</span>
+              <span class="${statusClass}">${statusTxt}</span>
+            </div>
+            <div class="order-name">${v.janela} • ${v.local}</div>
+          </div>
+        `;
+      }).join("");
+
+      // clique -> detalhe no painel direito
+      list.querySelectorAll(".vaga-card").forEach(el => {
+        el.addEventListener("click", () => {
+          const id = Number(el.getAttribute("data-vid"));
+          const vaga = vagasData.find(x => x.id === id);
+          if (vaga) renderVagaDetail(vaga);
+        });
+      });
+    }
+
+    // Mostra detalhe da vaga no painel direito
+    function renderVagaDetail(v){
+      detail.classList.remove("empty");
+      const restante = Math.max(v.capacidade - v.ocupadas, 0);
+      const livreTxt = restante > 0 ? `${restante} vagas abertas` : "Lotado";
+
+      detail.innerHTML = `
+        <div class="hdr">
+          <div class="title">
+            <strong>${v.titulo}</strong> • ${v.janela}
+          </div>
+          <div class="meta">
+            <span class="pill"><strong>Local:</strong> ${v.local}</span>
+            <span class="pill"><strong>Capacidade:</strong> ${v.capacidade}</span>
+            <span class="pill"><strong>Ocupadas:</strong> ${v.ocupadas}</span>
+            <span class="pill"><strong>Status:</strong> ${livreTxt}</span>
+          </div>
+        </div>
+
+        <div class="block">
+          <div style="font-weight:700;margin-bottom:8px">Requisitos</div>
+          <div class="chips">
+            ${v.requisitos.map(r => `<span class="chip">${r}</span>`).join("")}
+          </div>
+        </div>
+
+        <div class="block">
+          <div style="font-weight:700;margin-bottom:8px">Candidatos recentes</div>
+          <div class="rider-card">
+            <div class="thumb" style="display:flex;align-items:center;justify-content:center">👤</div>
+            <div style="flex:1;margin-left:10px">
+              <div class="rider-id">Felipe Andrade</div>
+              <div class="rider-meta">CNH A • Moto OK • Nota 4.7</div>
+            </div>
+            <button class="btn-outline">Ver perfil</button>
+          </div>
+          <div class="rider-card" style="margin-top:8px">
+            <div class="thumb" style="display:flex;align-items:center;justify-content:center">👤</div>
+            <div style="flex:1;margin-left:10px">
+              <div class="rider-id">Aline Sousa</div>
+              <div class="rider-meta">CNH A • Experiência 1 ano • Nota 4.5</div>
+            </div>
+            <button class="btn-outline">Ver perfil</button>
+          </div>
+        </div>
+
+        <div class="footer-actions">
+          <button class="btn-danger">Encerrar vaga</button>
+          <button class="btn-primary">Adicionar entregador</button>
+        </div>
+      `;
+    }
+
+    // Render inicial (para quando você já entra em Vagas)
+    renderVagasList();
+
+    // Garante que sempre que clicar em "Vagas" a lista é renderizada
+    btnVagas.addEventListener("click", () => {
+      renderVagasList();
+      // (opcional) limpar painel direito
+      detail.classList.add("empty");
+      detail.textContent = "Selecione uma vaga para ver detalhes";
+    });
+  });
+</script>
+
 </body>
+
 </html>

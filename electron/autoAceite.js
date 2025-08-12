@@ -1,79 +1,88 @@
-// ---- CONFIG BÁSICA ----
+// autoaceite.js
+
+// ---- Config ----
 const C = window.APP_CONFIG || {};
 const API_BASE = (C.API_BASE_URL || "http://localhost:8000/api_v1").replace(/\/$/, "");
-const TOKEN = C.TOKEN || "";
+const TOKEN    = C.TOKEN || "";
 
-// Defina aqui as rotas reais do seu backend
+// Endpoints (ajuste para os teus reais)
 const ENDPOINTS = {
   get: "/config/auto-aceite", // GET -> { enabled: boolean }
   set: "/config/auto-aceite", // POST -> { enabled: boolean }
 };
 
-// ---- HELPER API ----
+// ---- Helpers ----
 async function api(path, { method = "GET", body } = {}) {
   const url = `${API_BASE}${path}`;
   const headers = { "Content-Type": "application/json" };
   if (TOKEN) headers["Authorization"] = `Bearer ${TOKEN}`;
-  const res = await fetch(url, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  const res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
   if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`${res.status} ${res.statusText} ${text || ""}`.trim());
+    let text = "";
+    try { text = await res.text(); } catch {}
+    throw new Error(`${res.status} ${res.statusText}${text ? " - " + text : ""}`);
   }
   const text = await res.text();
   return text ? JSON.parse(text) : {};
 }
 
-// ---- UI STATE ----
-const btnAuto = document.getElementById("btnAuto");
-let isLoading = false;
-let autoEnabled = false;
-
-function applyButtonState(enabled) {
-  autoEnabled = enabled;
+function setBtnState(btn, enabled) {
+  if (!btn) return;
   if (enabled) {
-    btnAuto.classList.remove("off");
-    btnAuto.textContent = "ON";
-    btnAuto.title = "Aceite automático ativado";
+    btn.classList.remove("off");
+    btn.textContent = "ON";
+    btn.title = "Aceite automático ativado";
+    btn.setAttribute("data-tip", "Aceite automático ativado");
   } else {
-    btnAuto.classList.add("off");
-    btnAuto.textContent = "OFF";
-    btnAuto.title = "Aceite automático desativado";
+    btn.classList.add("off");
+    btn.textContent = "OFF";
+    btn.title = "Aceite automático desativado";
+    btn.setAttribute("data-tip", "Aceite automático desativado");
   }
 }
 
-// ---- INIT: busca estado atual no backend ----
-async function initAutoAccept() {
+// ---- Boot ----
+document.addEventListener("DOMContentLoaded", async () => {
+  const btn = document.getElementById("btnAuto");
+  if (!btn) return;
+
+  // garante que o botão tenha a classe de tooltip
+  if (!btn.classList.contains("has-tip")) btn.classList.add("has-tip");
+
+  let isLoading = false;
+  let enabled = false;
+
+  // Estado inicial (GET)
   try {
     const data = await api(ENDPOINTS.get, { method: "GET" });
-    applyButtonState(!!data.enabled);
+    enabled = !!data.enabled;
   } catch (e) {
     console.warn("Falha ao carregar estado do auto-aceite:", e.message);
-    applyButtonState(false);
+    enabled = false; // fallback
   }
-}
+  setBtnState(btn, enabled);
 
-// ---- CLICK HANDLER ----
-btnAuto.addEventListener("click", async () => {
-  if (isLoading) return;
-  isLoading = true;
+  // Toggle (POST)
+  btn.addEventListener("click", async () => {
+    if (isLoading) return;
+    isLoading = true;
 
-  const previous = autoEnabled;
-  const next = !previous;
-  applyButtonState(next);
+    const prev = enabled;
+    const next = !prev;
 
-  try {
-    await api(ENDPOINTS.set, { method: "POST", body: { enabled: next } });
-  } catch (e) {
-    applyButtonState(previous);
-    alert("Não foi possível atualizar o Aceite automático: " + e.message);
-  } finally {
-    isLoading = false;
-  }
+    // UI otimista
+    setBtnState(btn, next);
+
+    try {
+      await api(ENDPOINTS.set, { method: "POST", body: { enabled: next } });
+      enabled = next; // confirma
+    } catch (e) {
+      // rollback
+      setBtnState(btn, prev);
+      enabled = prev;
+      alert("Não foi possível atualizar o Aceite automático.\n" + e.message);
+    } finally {
+      isLoading = false;
+    }
+  });
 });
-
-// Boot
-document.addEventListener("DOMContentLoaded", initAutoAccept);
