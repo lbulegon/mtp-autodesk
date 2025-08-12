@@ -12,6 +12,11 @@ function createWindow() {
     fullscreenable: true,      // macOS
     // simpleFullScreen: true, // macOS (modo fullscreen sem animação; descomente se preferir)
     backgroundColor: "#000000",
+
+    width: 800,
+    height: 600,
+    icon: path.join(__dirname, "../assets/icon.png"), // Caminho do ícone
+
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
