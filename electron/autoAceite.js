@@ -2,7 +2,7 @@
 
 // ---- Config ----
 const C = window.APP_CONFIG || {};
-const API_BASE = (C.API_BASE_URL || "http://localhost:8000/api_v1").replace(/\/$/, "");
+const API_BASE = (C.API_BASE_URL || "https://motopro-development.up.railway.app/api/v1").replace(/\/$/, "");
 const TOKEN    = C.TOKEN || "";
 
 // Endpoints (ajuste para os teus reais)

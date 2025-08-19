@@ -1,67 +1,100 @@
 // electron/main.ts
-import { app, BrowserWindow, globalShortcut } from "electron";
-import * as path from "path";
+
+// main.ts
+import { app, BrowserWindow, ipcMain } from "electron";
+import path from "node:path";
+import fs from "node:fs";
+
+let API_BASE_URL: string =
+  process.env.API_BASE_URL || "http://127.0.0.1:8000/api/v1";
 
 let win: BrowserWindow | null = null;
 
-function createWindow() {
+function resolveIndexHtml() {
+  // Ajuste se seu index.html estiver noutro lugar
+  // Aqui assumo que o arquivo está em <raiz do projeto>/electron/index.html
+  const p = path.resolve(process.cwd(), "electron", "index.html");
+  if (!fs.existsSync(p)) {
+    throw new Error(`index.html não encontrado em: ${p}`);
+  }
+  return p;
+}
+
+async function createWindow() {
   win = new BrowserWindow({
-    show: false,               // mostra só quando estiver pronto
-    frame: false,              // sem bordas / barra do SO (estilo POS)
-    fullscreen: true,          // tenta abrir já em fullscreen
-    fullscreenable: true,      // macOS
-    // simpleFullScreen: true, // macOS (modo fullscreen sem animação; descomente se preferir)
-    backgroundColor: "#000000",
-
-    width: 800,
-    height: 600,
-    icon: path.join(__dirname, "../assets/icon.png"), // Caminho do ícone
-
+    width: 1380,
+    height: 880,
+    show: false, // Não mostrar a janela até estar pronta
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, "preload.js"), // gerado a partir do preload.ts
     },
   });
 
-  // Esconde menu (Windows/Linux)
-  win.setMenuBarVisibility(false);
-  win.setAutoHideMenuBar(true);
-
-  // Carrega a UI
-  win.loadFile(path.join(__dirname, "../electron/index.html"));
-
-  // Garantir fullscreen depois do ready-to-show (ajuda no macOS)
-  win.once("ready-to-show", () => {
-    if (!win) return;
-    // “dupla confirmação” do modo tela cheia
-    win.setFullScreen(true);
-    // alternativa “impossível de sair” (use só se quiser mesmo kiosk):
-    // win.setKiosk(true);
-
-    win.show();
-  });
-
+  await win.loadFile(resolveIndexHtml());
+  
+  // Maximizar a janela após carregar o conteúdo
+  win.maximize();
+  
+  // Mostrar a janela após maximizar
+  win.show();
+  
   win.on("closed", () => (win = null));
 }
 
-app.whenReady().then(() => {
-  createWindow();
+// =============== IPC: Configurações e Proxy de API ===============
+ipcMain.handle("api:setBaseUrl", (_evt, url: string) => {
+  if (typeof url === "string" && url.trim()) {
+    API_BASE_URL = url.trim().replace(/\/+$/, ""); // remove / no final
+  }
+  return true;
+});
 
-  // Atalhos úteis (remova em produção se não quiser):
-  // F11 alterna fullscreen
-  globalShortcut.register("F11", () => win?.setFullScreen(!win?.isFullScreen()));
-  // Esc sai do kiosk/fullscreen (útil quando frame=false)
-  globalShortcut.register("Escape", () => {
-    if (!win) return;
-    if (win.isKiosk()) win.setKiosk(false);
-    if (win.isFullScreen()) win.setFullScreen(false);
+type ApiRequestArgs = {
+  method?: string;
+  path: string; // ex: "/alocacoes/ativas/agora/?estabelecimento_id=10"
+  headers?: Record<string, string>;
+  body?: any; // objeto que vira JSON
+};
+
+ipcMain.handle("api:request", async (_evt, args: ApiRequestArgs) => {
+  const method = (args.method || "GET").toUpperCase();
+  const p = args.path.startsWith("/") ? args.path : `/${args.path}`;
+  const url = API_BASE_URL + p;
+
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    ...(args.headers || {}),
+  };
+
+  const init: RequestInit = { method, headers };
+  if (args.body != null) {
+    headers["Content-Type"] = headers["Content-Type"] || "application/json";
+    init.body =
+      typeof args.body === "string" ? args.body : JSON.stringify(args.body);
+  }
+
+  const res = await fetch(url, init);
+  const text = await res.text();
+  let data: any;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    data = text;
+  }
+  return { status: res.status, data };
+});
+
+// ================================================================
+
+app.whenReady().then(async () => {
+  await createWindow();
+
+  app.on("activate", async () => {
+    if (BrowserWindow.getAllWindows().length === 0) await createWindow();
   });
 });
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
-});
-
-app.on("activate", () => {
-  if (win === null) createWindow();
 });

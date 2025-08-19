@@ -6,53 +6,50 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MotoPro AutoDesk</title>
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* utilitários locais */
-    .hidden { display: none; }
-
-    /* avatar por iniciais (fallback quando não há foto) */
-    .avatar-circle {
-      width: 60px; height: 60px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; color: #fff; flex: 0 0 auto;
-    }
-
-    /* grid compacta dentro do painel da direita */
-    .detail .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    @media (max-width: 1024px) { .detail .grid { grid-template-columns: 1fr; } }
-
-    /* mini estatística em cards */
-    .mini { border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: 10px; }
-    .mini .k { color: var(--muted); font-size: 12px; }
-    .mini .v { font-weight: 700; font-size: 16px; }
-
-    /* CSS mínimo do Calendário (Admin Vagas) – o resto está no styles.css */
-    .calendar{ padding:12px; }
-    .cal-head{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; color:var(--muted); font-size:12px; padding:4px 0 8px; }
-    .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; min-height:0; }
-    .cal-day{
-      background:#fff; border:1px solid var(--line); border-radius:12px;
-      padding:10px; min-height:80px; display:flex; flex-direction:column; gap:6px;
-      cursor:pointer; transition:box-shadow .15s, transform .05s;
-    }
-    .cal-day:hover{ box-shadow:0 2px 8px rgba(0,0,0,.08); transform:translateY(-1px); }
-    .cal-day.inactive{ background:#f8f9fa; color:#98a2b3; cursor:default; }
-    .cal-day .num{ font-weight:800; }
-    .cal-day .chips{ display:flex; gap:4px; flex-wrap:wrap; }
-    .cal-day .chip{ font-size:11px; padding:2px 6px; border-radius:999px; border:1px solid var(--line); background:#f3f4f6; }
-
-    /* Editor de turnos no painel direito */
-    .turn-editor .row{ display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center; }
-    .turn-editor .row + .row{ margin-top:10px; }
-    .turn-editor .lbl{ font-weight:700; }
-    .turn-editor input[type="number"]{ width:90px; padding:8px; border:1px solid var(--line); border-radius:10px; outline:none; }
-    .turn-editor input[type="number"]:focus{ border-color:var(--primary); box-shadow:0 0 0 3px rgba(0,123,255,.15); }
-  </style>
 </head>
 
 <body>
-  <!-- Topbar -->
-  <header class="topbar">
+  <!-- TELA DE LOGIN (inicialmente visível) -->
+  <div id="login-overlay" class="login-overlay">
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="login-logo">🏢</div>
+          <div class="login-title">MotoPro</div>
+          <div class="login-subtitle">Sistema de Gestão de Vagas</div>
+        </div>
+        
+        <form id="loginForm" class="login-form">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="seu@email.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" required placeholder="••••••••">
+          </div>
+          
+          <button type="submit" id="loginBtn" class="login-btn">
+            <span id="loginBtnText">🔐 Entrar</span>
+          </button>
+        </form>
+        
+        <div id="loginStatus" class="login-status"></div>
+        
+        <div class="login-credentials">
+          <div>Credenciais de teste:</div>
+          <div><strong>Email:</strong> lbulegon@gmail.com</div>
+          <div><strong>Senha:</strong> Gabi#0201</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APLICAÇÃO PRINCIPAL (inicialmente oculta) -->
+  <div id="main-app" class="app" style="display: none;">
+    <!-- Topbar -->
+    <header class="topbar">
     <div class="store-badge">
       <div class="store-icon">🏍</div>
       <div>
@@ -76,8 +73,8 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <button class="side-icon has-tip active" data-tip="Pedidos" id="btn-orders">📦</button>
-      <button class="side-icon has-tip" data-tip="Entregadores" id="btn-riders">🛵</button>
       <button class="side-icon has-tip" data-tip="Vagas" id="btn-vagas">📋</button>
+      <button class="side-icon has-tip" data-tip="Alocações" id="btn-alocacoes">👥</button>
       <button class="side-icon has-tip" data-tip="Admin Vagas" id="btn-admin-vagas">🗓️</button>
     </aside>
 
@@ -111,16 +108,18 @@
           </section>
         </div>
 
-        <!-- VIEW: Entregadores -->
-        <div id="left-riders" class="left-view hidden">
-          <h2 class="section-title">Entregadores no turno</h2>
-          <div class="riders-list" id="riders-list"><!-- via JS --></div>
-        </div>
+
 
         <!-- VIEW: Vagas (lista simples) -->
         <div id="left-vagas" class="left-view hidden">
           <h2 class="section-title">Gestão de Vagas</h2>
           <div class="list" id="list-vagas" style="padding:12px;"></div>
+        </div>
+
+        <!-- VIEW: Alocações (motoboys alocados) -->
+        <div id="left-alocacoes" class="left-view hidden">
+          <h2 class="section-title">Alocações Ativas</h2>
+          <div class="list" id="alocacoes-container" style="padding:12px;"></div>
         </div>
 
         <!-- NOVA VIEW: Admin Vagas (calendário) -->
@@ -148,11 +147,158 @@
         <div class="detail empty" id="detail">Selecione um item para ver detalhes</div>
       </section>
     </main>
-  </div>
+  </div> <!-- Fechamento da div main-app -->
 
-  <!-- Scripts opcionais (ex.: config/autoaceite se usar API real) -->
-  <!-- <script src="config.js"></script>
-  <script src="autoaceite.js"></script> -->
+  <!-- Scripts de configuração -->
+  <script src="config.js"></script>
+  <!-- <script src="autoaceite.js"></script> -->
+
+  <!-- Sistema de autenticação global -->
+  <script src="authManager.js"></script>
+
+  <!-- Carrega o módulo de integração de vagas ANTES dos outros scripts -->
+  <script src="vagasIntegration.js"></script>
+
+  <!-- Sistema de login da aplicação -->
+  <script>
+    // ====== SISTEMA DE LOGIN DA APLICAÇÃO ======
+    class AppLoginManager {
+      constructor() {
+        this.loginOverlay = document.getElementById('login-overlay');
+        this.mainApp = document.getElementById('main-app');
+        this.loginForm = document.getElementById('loginForm');
+        this.emailInput = document.getElementById('email');
+        this.passwordInput = document.getElementById('password');
+        this.loginBtn = document.getElementById('loginBtn');
+        this.loginBtnText = document.getElementById('loginBtnText');
+        this.loginStatus = document.getElementById('loginStatus');
+        
+        this.init();
+      }
+      
+      init() {
+        // Preencher credenciais de teste
+        if (this.emailInput && this.passwordInput) {
+          this.emailInput.value = 'lbulegon@gmail.com';
+          this.passwordInput.value = 'Gabi#0201';
+        }
+        
+        // Vincular eventos
+        if (this.loginForm) {
+          this.loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleLogin();
+          });
+        }
+        
+        // Verificar se já está autenticado
+        this.checkAuthStatus();
+      }
+      
+      async checkAuthStatus() {
+        // Aguardar um pouco para garantir que o AuthManager foi carregado
+        setTimeout(() => {
+          if (window.authManager && window.authManager.isAuthenticated) {
+            console.log('✅ Usuário já autenticado, mostrando aplicação...');
+            this.showApp();
+          } else {
+            console.log('🔐 Usuário não autenticado, mostrando tela de login...');
+            this.showLogin();
+          }
+        }, 500);
+      }
+      
+      async handleLogin() {
+        if (!this.emailInput || !this.passwordInput || !this.loginBtn || !this.loginStatus) return;
+        
+        const email = this.emailInput.value.trim();
+        const password = this.passwordInput.value;
+        
+        if (!email || !password) {
+          this.showStatus('Por favor, preencha todos os campos', 'error');
+          return;
+        }
+        
+        // Desabilitar botão e mostrar loading
+        this.loginBtn.disabled = true;
+        this.loginBtnText.textContent = '⏳ Entrando...';
+        this.showStatus('', '');
+        
+        try {
+          console.log('🔐 Tentando login com:', email);
+          
+          // Usar o AuthManager para fazer login
+          const result = await window.authManager.login(email, password);
+          
+          if (result.success) {
+            this.showStatus('✅ Login realizado com sucesso!', 'success');
+            
+            // Aguardar um pouco para mostrar a mensagem de sucesso
+            setTimeout(() => {
+              this.showApp();
+            }, 1000);
+          } else {
+            this.showStatus('❌ Falha no login', 'error');
+          }
+        } catch (error) {
+          console.error('❌ Erro no login:', error);
+          this.showStatus(`❌ Erro: ${error.message}`, 'error');
+        } finally {
+          // Reabilitar botão
+          this.loginBtn.disabled = false;
+          this.loginBtnText.textContent = '🔐 Entrar';
+        }
+      }
+      
+      showStatus(message, type) {
+        if (!this.loginStatus) return;
+        
+        if (!message) {
+          this.loginStatus.style.display = 'none';
+          this.loginStatus.className = 'login-status';
+          return;
+        }
+        
+        this.loginStatus.style.display = 'block';
+        this.loginStatus.textContent = message;
+        this.loginStatus.className = `login-status ${type}`;
+      }
+      
+      showLogin() {
+        if (this.loginOverlay) this.loginOverlay.style.display = 'flex';
+        if (this.mainApp) this.mainApp.style.display = 'none';
+      }
+      
+      showApp() {
+        if (this.loginOverlay) this.loginOverlay.style.display = 'none';
+        if (this.mainApp) this.mainApp.style.display = 'block';
+        
+        // Inicializar a aplicação
+        this.initApp();
+      }
+      
+      initApp() {
+        console.log('🚀 Inicializando aplicação...');
+        
+        // Renderizar listas iniciais
+        if (typeof renderOrdersLists === 'function') {
+          renderOrdersLists();
+        }
+        
+        // Inicializar integração de vagas
+        if (window.vagasIntegration && typeof window.vagasIntegration.init === 'function') {
+          window.vagasIntegration.init();
+        }
+        
+        console.log('✅ Aplicação inicializada');
+      }
+    }
+    
+    // Inicializar o sistema de login quando o DOM estiver pronto
+    document.addEventListener('DOMContentLoaded', () => {
+      new AppLoginManager();
+    });
+  </script>
 
   <script>
     // --------- Dados de exemplo de entregadores ---------
@@ -306,25 +452,20 @@
     }
 
     function renderVagasList(){
-      const box=document.getElementById("list-vagas");
-      box.innerHTML=vagasData.map(v=>{
-        const restante=Math.max(v.capacidade - v.ocupadas,0);
-        const statusClass=restante>0?"badge-online":"badge-offline";
-        const statusTxt=restante>0?`${restante} vagas`:"Lotado";
-        return `
-          <div class="card vaga-card" data-vid="${v.id}" style="cursor:pointer">
-            <div class="row-top"><span class="order-id">${v.titulo}</span><span class="${statusClass}">${statusTxt}</span></div>
-            <div class="order-name">${v.janela} • ${v.local}</div>
-          </div>`;
-      }).join("");
-
-      document.querySelectorAll(".vaga-card").forEach(el=>{
-        el.addEventListener("click",()=>{
-          const id=Number(el.getAttribute("data-vid"));
-          const v=vagasData.find(x=>x.id===id);
-          if(v) renderVagaDetail(v);
-        });
-      });
+      // Sempre usar a integração de vagas
+      if (typeof window.renderVagasInSidebar === 'function') {
+        window.renderVagasInSidebar();
+      } else {
+        console.error('❌ Módulo de integração de vagas não carregado');
+        const box = document.getElementById("list-vagas");
+        box.innerHTML = `
+          <div style="color: #ef4444; text-align: center; padding: 20px;">
+            <div>❌</div>
+            <div>Erro: Módulo de vagas não carregado</div>
+            <div style="margin-top: 10px;"><button class="btn btn-outline" onclick="location.reload()">Recarregar</button></div>
+          </div>
+        `;
+      }
     }
 
     // ========= DETALHES (lado direito) =========
@@ -362,41 +503,47 @@
     }
 
     function renderVagaDetail(v){
-      const box=document.getElementById("detail");
-      box.classList.remove("empty");
-      const restante=Math.max(v.capacidade - v.ocupadas,0);
-      const livreTxt=restante>0?`${restante} vagas abertas`:"Lotado";
-      box.innerHTML=`
-        <div class="hdr">
-          <div class="title"><strong>${v.titulo}</strong> • ${v.janela}</div>
-          <div class="meta">
-            <span class="pill"><strong>Local:</strong> ${v.local}</span>
-            <span class="pill"><strong>Capacidade:</strong> ${v.capacidade}</span>
-            <span class="pill"><strong>Ocupadas:</strong> ${v.ocupadas}</span>
-            <span class="pill"><strong>Status:</strong> ${livreTxt}</span>
+      // Usar a função de detalhes da integração se disponível
+      if (typeof window.viewVagaDetails === 'function') {
+        window.viewVagaDetails(v.id);
+      } else {
+        // Fallback para o formato antigo
+        const box=document.getElementById("detail");
+        box.classList.remove("empty");
+        const restante=Math.max(v.capacidade - v.ocupadas,0);
+        const livreTxt=restante>0?`${restante} vagas abertas`:"Lotado";
+        box.innerHTML=`
+          <div class="hdr">
+            <div class="title"><strong>${v.titulo}</strong> • ${v.janela}</div>
+            <div class="meta">
+              <span class="pill"><strong>Local:</strong> ${v.local}</span>
+              <span class="pill"><strong>Capacidade:</strong> ${v.capacidade}</span>
+              <span class="pill"><strong>Ocupadas:</strong> ${v.ocupadas}</span>
+              <span class="pill"><strong>Status:</strong> ${livreTxt}</span>
+            </div>
           </div>
-        </div>
-        <div class="block">
-          <div style="font-weight:700;margin-bottom:8px">Requisitos</div>
-          <div class="chips">${v.requisitos.map(r=>`<span class="chip">${r}</span>`).join("")}</div>
-        </div>
-        <div class="block">
-          <div style="font-weight:700;margin-bottom:8px">Candidatos recentes</div>
-          <div class="rider-card">
-            <div class="thumb" style="display:flex;align-items:center;justify-content:center">👤</div>
-            <div style="flex:1;margin-left:10px"><div class="rider-id">Felipe Andrade</div><div class="rider-meta">CNH A • Moto OK • Nota 4.7</div></div>
-            <button class="btn-outline">Ver perfil</button>
+          <div class="block">
+            <div style="font-weight:700;margin-bottom:8px">Requisitos</div>
+            <div class="chips">${v.requisitos.map(r=>`<span class="chip">${r}</span>`).join("")}</div>
           </div>
-          <div class="rider-card" style="margin-top:8px">
-            <div class="thumb" style="display:flex;align-items:center;justify-content:center">👤</div>
-            <div style="flex:1;margin-left:10px"><div class="rider-id">Aline Sousa</div><div class="rider-meta">CNH A • Experiência 1 ano • Nota 4.5</div></div>
-            <button class="btn-outline">Ver perfil</button>
+          <div class="block">
+            <div style="font-weight:700;margin-bottom:8px">Candidatos recentes</div>
+            <div class="rider-card">
+              <div class="thumb" style="display:flex;align-items:center;justify-content:center">👤</div>
+              <div style="flex:1;margin-left:10px"><div class="rider-id">Felipe Andrade</div><div class="rider-meta">CNH A • Moto OK • Nota 4.7</div></div>
+              <button class="btn-outline">Ver perfil</button>
+            </div>
+            <div class="rider-card" style="margin-top:8px">
+              <div class="thumb" style="display:flex;align-items:center;justify-content:center">👤</div>
+              <div style="flex:1;margin-left:10px"><div class="rider-id">Aline Sousa</div><div class="rider-meta">CNH A • Experiência 1 ano • Nota 4.5</div></div>
+              <button class="btn-outline">Ver perfil</button>
+            </div>
           </div>
-        </div>
-        <div class="footer-actions">
-          <button class="btn-danger">Encerrar vaga</button>
-          <button class="btn-primary">Adicionar entregador</button>
-        </div>`;
+          <div class="footer-actions">
+            <button class="btn-danger">Encerrar vaga</button>
+            <button class="btn-primary">Adicionar entregador</button>
+          </div>`;
+      }
     }
 
     // ========= INICIALIZAÇÃO =========
@@ -408,20 +555,23 @@
 
   <!-- Carrega o módulo Admin Vagas de arquivo externo -->
   <script src="adminvagas.js"></script>
+  
+  <!-- Carrega o módulo de Alocações de arquivo externo -->
+  <script src="alocacoesIntegration.js"></script>
 
   <!-- Navegação entre views (inclui Admin Vagas) -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const views = {
         orders: document.getElementById("left-orders"),
-        riders: document.getElementById("left-riders"),
         vagas:  document.getElementById("left-vagas"),
+        alocacoes: document.getElementById("left-alocacoes"),
         adminV: document.getElementById("left-admin-vagas"),
       };
       const buttons = {
         orders: document.getElementById("btn-orders"),
-        riders: document.getElementById("btn-riders"),
         vagas:  document.getElementById("btn-vagas"),
+        alocacoes: document.getElementById("btn-alocacoes"),
         adminV: document.getElementById("btn-admin-vagas"),
       };
 
@@ -439,19 +589,44 @@
         d.textContent="Selecione um pedido para ver detalhes";
       });
 
-      buttons.riders.addEventListener("click",()=>{
-        showView("riders");
-        renderRidersList();
-        const d=document.getElementById("detail");
-        d.classList.add("empty");
-        d.textContent="Selecione um entregador para ver detalhes";
-      });
 
-      buttons.vagas.addEventListener("click",()=>{
+
+      buttons.vagas.addEventListener("click", async () => {
         showView("vagas");
+        
+        // Carregar vagas usando nossa integração
+        try {
+          if (typeof window.renderVagasInSidebar === 'function') {
+            await window.renderVagasInSidebar();
+          } else {
+            console.warn('⚠️ Módulo de integração de vagas não carregado');
+          }
+        } catch (error) {
+          console.error('❌ Erro ao carregar vagas:', error);
+        }
+        
         const d=document.getElementById("detail");
         d.classList.add("empty");
         d.textContent="Selecione uma vaga para ver detalhes";
+      });
+
+      buttons.alocacoes.addEventListener("click", async () => {
+        showView("alocacoes");
+        
+        // Carregar alocações usando nossa integração
+        try {
+          if (typeof window.renderAlocacoes === 'function') {
+            await window.renderAlocacoes();
+          } else {
+            console.warn('⚠️ Módulo de integração de alocações não carregado');
+          }
+        } catch (error) {
+          console.error('❌ Erro ao carregar alocações:', error);
+        }
+        
+        const d=document.getElementById("detail");
+        d.classList.add("empty");
+        d.textContent="Selecione uma alocação para ver detalhes";
       });
 
       buttons.adminV.addEventListener("click",()=>{

@@ -5,7 +5,7 @@ const { shell } = require("electron");
 // -------- Config --------
 const C = window.APP_CONFIG || {};
 const API = {
-  base: (C.API_BASE_URL || "http://localhost:8000/api_v1").replace(/\/$/, ""),
+          base: (C.API_BASE_URL || "https://motopro-development.up.railway.app/api/v1").replace(/\/$/, ""),
   token: C.TOKEN || "",
   front: (C.FRONT_BASE_URL || "http://localhost:3000").replace(/\/$/, ""),
 };
@@ -19,7 +19,6 @@ const ENDPOINTS = {
     vaga_set_capacity:   (id) => `/vagas/${id}/capacidade`,// POST {max_aloc}
     vaga_allocate:       (id) => `/vagas/${id}/alocar`,    // POST {motoboy_id}
     vaga_deallocate:     (id) => `/vagas/${id}/desalocar`, // POST {motoboy_id}
-    riders_list:         "/entregadores",                 // GET  (para alocar)
   };
 
 
@@ -42,7 +41,7 @@ let ORDERS = [];
 let state = {
   query: "",
   selectedId: null,
-  view: "orders", // "orders" | "riders" | "vagas"
+  view: "orders", // "orders" | "vagas"
 };
 
 // ====== ORDERS (Pedidos) ======
@@ -281,57 +280,9 @@ function openVaga(order) {
   shell.openExternal(url);
 }
 
-// ====== RIDERS (Entregadores) ======
-async function loadRiders() {
-  try {
-    // Ajuste a rota real: ex. "/entregadores" ou "/riders/online"
-    const data = await api("/entregadores");
-    return (data.results || data || []).map((r) => ({
-      id: r.id,
-      nome: r.nome,
-      placa: r.placa || r.moto_placa,
-      online: !!r.online,
-      entregasHoje: r.entregas_hoje ?? 0,
-      nivel: r.nivel || "—",
-    }));
-  } catch (e) {
-    console.warn("Falha ao buscar entregadores, usando mock:", e.message);
-    return [
-      { id: 11, nome: "Carlos Almeida", placa: "IXY-4312", online: true,  entregasHoje: 8,  nivel: "A" },
-      { id: 22, nome: "Jéssica Costa",  placa: "POQ-9090", online: true,  entregasHoje: 5,  nivel: "B" },
-      { id: 33, nome: "Rafael Lima",    placa: "MTP-2025", online: false, entregasHoje: 0,  nivel: "C" },
-    ];
-  }
-}
 
-async function renderRiders() {
-  const box = el("#detail");
-  box.className = "detail";
-  box.innerHTML = `
-    <div class="hdr"><div class="title" style="font-size:18px;font-weight:800">Entregadores</div></div>
-    <div style="padding:12px 16px" id="ridersWrap"></div>
-  `;
-  const riders = await loadRiders();
-  const wrap = el("#ridersWrap");
-  if (!riders.length) { wrap.innerHTML = `<div style="color:#6b7280">Nenhum entregador encontrado.</div>`; return; }
 
-  wrap.innerHTML = riders.map(r => `
-    <div class="rider-card" data-rider="${r.id}">
-      <div>
-        <div class="rider-id">${r.nome} <span class="rider-meta">• ${r.placa || "—"}</span></div>
-        <div class="rider-meta">Nível ${r.nivel} • Entregas hoje: ${r.entregasHoje}</div>
-      </div>
-      <div class="${r.online ? "badge-online" : "badge-offline"}">${r.online ? "Online" : "Offline"}</div>
-    </div>
-  `).join("");
 
-  wrap.querySelectorAll("[data-rider]").forEach(card => {
-    card.addEventListener("click", () => {
-      const id = card.getAttribute("data-rider");
-      shell.openExternal(`${API.front}/entregadores/${id}`);
-    });
-  });
-}
 
 // ====== VAGAS (Gestão de Vagas) ======
 async function loadVagas() {
@@ -376,10 +327,7 @@ async function loadVagas() {
     await renderVagas(); alert(`Capacidade da vaga #${id} atualizada para ${max}.`);
   }
   async function vagaAllocate(id) {
-    // Se quiser uma lista para escolher, podemos carregar do endpoint de entregadores:
-    const riders = await api(ENDPOINTS.riders_list).catch(() => []);
-    const hint = riders?.results?.length ? `IDs disponíveis: ${riders.results.map(r=>r.id).join(", ")}` : "Informe o ID do motoboy";
-    const motoboyId = prompt(`${hint}\nID do motoboy para alocar:`);
+    const motoboyId = prompt("ID do motoboy para alocar:");
     if (!motoboyId) return;
     await api(ENDPOINTS.vaga_allocate(id), { method: "POST", body: { motoboy_id: motoboyId } });
     await renderVagas(); alert(`Motoboy ${motoboyId} alocado na vaga #${id}.`);
@@ -460,11 +408,7 @@ function bindSidebar() {
     renderDetail();
   });
 
-  el("#btn-riders").addEventListener("click", async () => {
-    setActiveSidebar("btn-riders");
-    state.view = "riders";
-    await renderRiders();
-  });
+
 
   el("#btn-vagas").addEventListener("click", async () => {
     setActiveSidebar("btn-vagas");

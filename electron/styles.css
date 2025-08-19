@@ -35,20 +35,20 @@ body {
 
 /* Topbar */
 .topbar {
-  height: 56px;
+  height: 64px; /* Aumentado de 56px */
   background: var(--card);
   border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
-  gap: 12px;
+  padding: 0 20px; /* Aumentado de 16px */
+  gap: 16px; /* Aumentado de 12px */
 }
 
 .store-badge {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px; /* Aumentado de 10px */
 }
 
 .store-icon {
@@ -74,14 +74,14 @@ body {
 
 .kpis {
   display: flex;
-  gap: 8px;
+  gap: 12px; /* Aumentado de 8px */
 }
 
 .kpi {
   background: #fafafa;
   border: 1px solid var(--line);
   border-radius: 10px;
-  padding: 6px 10px;
+  padding: 8px 14px; /* Aumentado de 6px 10px */
 }
 
 .kpi-label {
@@ -96,13 +96,13 @@ body {
 .top-right {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px; /* Aumentado de 6px */
 }
 
 .icon-btn {
   border: 0;
   background: transparent;
-  padding: 6px;
+  padding: 8px; /* Aumentado de 6px */
   border-radius: 8px;
 }
 
@@ -112,8 +112,8 @@ body {
 }
 
 .avatar {
-  width: 32px;
-  height: 32px;
+  width: 36px; /* Aumentado de 32px */
+  height: 36px; /* Aumentado de 32px */
   border-radius: 999px;
   background: #e5e7eb;
   display: grid;
@@ -123,8 +123,8 @@ body {
 /* Área abaixo da topbar */
 .app {
   display: grid;
-  grid-template-columns: 56px 1fr;
-  height: calc(100vh - 56px);
+  grid-template-columns: 64px 1fr; /* Aumentado de 56px */
+  height: calc(100vh - 64px); /* Ajustado para nova altura da topbar */
   min-height: 0;
   /* permite filhos rolarem */
 }
@@ -136,13 +136,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px;
-  gap: 8px;
+  padding: 12px 8px; /* Aumentado padding vertical de 8px para 12px */
+  gap: 12px; /* Aumentado de 8px */
 }
 
 .side-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px; /* Aumentado de 40px */
+  height: 44px; /* Aumentado de 40px */
   border: 0;
   border-radius: 12px;
   background: transparent;
@@ -167,7 +167,7 @@ body {
 /* Conteúdo em duas colunas */
 .content {
   display: grid;
-  grid-template-columns: 420px 1fr;
+  grid-template-columns: 440px 1fr; /* Aumentado de 420px */
   height: 100%;
   min-height: 0;
 }
@@ -186,7 +186,7 @@ body {
 
 /* Barra Aceite automático (fixa no topo) */
 .auto-accept {
-  padding: 12px;
+  padding: 16px; /* Aumentado de 12px */
   border-bottom: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
@@ -201,8 +201,8 @@ body {
   border: 1px solid var(--primary);
   background: var(--primary);
   color: #fff;
-  border-radius: 10px;
-  padding: 6px 16px;
+  border-radius: 12px; /* Aumentado de 10px */
+  padding: 8px 20px; /* Aumentado de 6px 16px */
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -225,12 +225,12 @@ body {
 /* Busca (fixa logo abaixo) */
 .search-row {
   display: flex;
-  gap: 8px;
-  padding: 12px;
+  gap: 12px; /* Aumentado de 8px */
+  padding: 16px; /* Aumentado de 12px */
   background: var(--card);
   border-bottom: 1px solid var(--line);
   position: sticky;
-  top: 56px;
+  top: 64px; /* Ajustado para nova altura da topbar */
   z-index: 2;
 }
 
@@ -248,9 +248,9 @@ body {
 
 .search input {
   width: 100%;
-  padding: 8px 10px 8px 28px;
+  padding: 10px 12px 10px 32px; /* Aumentado padding */
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 12px; /* Aumentado de 10px */
   outline: none;
 }
 
@@ -262,8 +262,8 @@ body {
 .btn {
   border: 1px solid var(--line);
   background: #fff;
-  border-radius: 10px;
-  padding: 8px 12px;
+  border-radius: 12px; /* Aumentado de 10px */
+  padding: 10px 16px; /* Aumentado de 8px 12px */
   cursor: pointer;
 }
 
@@ -292,10 +292,10 @@ body {
 
 /* estado scroll: ocupa o espaço definido pela grid-row e cria rolagem na lista interna */
 .section--scroll {
-  margin: 12px;
+  margin: 16px; /* Aumentado de 12px */
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 16px; /* Aumentado de 14px */
   box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
   overflow: hidden;
   /* cabeçalho fixo + corpo rolável */
@@ -315,12 +315,12 @@ body {
 
 /* Cabeçalho do container */
 .section-title {
-  padding: 12px 14px;
+  padding: 16px 18px; /* Aumentado de 12px 14px */
   color: #1f2937;
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px; /* Aumentado de 8px */
   background: #f7faff;
   /* leve destaque */
   border-bottom: 1px solid var(--line);
@@ -339,14 +339,14 @@ body {
   background: #eff2f6;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 2px 8px;
+  padding: 3px 10px; /* Aumentado de 2px 8px */
 }
 
 /* Corpo rolável de cada container */
 .list {
-  padding: 12px;
+  padding: 16px; /* Aumentado de 12px */
   display: grid;
-  gap: 8px;
+  gap: 12px; /* Aumentado de 8px */
   overflow-y: auto;
   /* rolagem aqui, independente */
   min-height: 0;
@@ -357,9 +357,9 @@ body {
 
 /* Cards de pedido */
 .card {
-  padding: 12px;
+  padding: 16px; /* Aumentado de 12px */
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 16px; /* Aumentado de 14px */
   background: #fff;
 }
 
@@ -388,12 +388,12 @@ body {
 
 .badge-status {
   display: inline-flex;
-  gap: 6px;
+  gap: 8px; /* Aumentado de 6px */
   align-items: center;
   font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 8px;
-  margin-top: 6px;
+  padding: 6px 10px; /* Aumentado de 4px 8px */
+  border-radius: 10px; /* Aumentado de 8px */
+  margin-top: 8px; /* Aumentado de 6px */
 }
 
 .dot {
@@ -428,9 +428,9 @@ body {
 }
 
 .detail {
-  margin: 16px;
+  margin: 20px; /* Aumentado de 16px */
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 18px; /* Aumentado de 16px */
   background: #fff;
   min-height: 200px;
 }
@@ -444,14 +444,14 @@ body {
 
 /* Entregadores (se usar) */
 .rider-card {
-  padding: 12px;
+  padding: 16px; /* Aumentado de 12px */
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 16px; /* Aumentado de 14px */
   background: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px; /* Aumentado de 8px */
 }
 
 .rider-card:hover {
@@ -472,7 +472,7 @@ body {
   background: #e6f4ea;
   border: 1px solid #cfead6;
   color: var(--success-ink);
-  padding: 4px 8px;
+  padding: 6px 10px; /* Aumentado de 4px 8px */
   border-radius: 999px;
   font-size: 12px;
 }
@@ -481,7 +481,7 @@ body {
   background: #f3f4f6;
   border: 1px solid var(--line);
   color: #495057;
-  padding: 4px 8px;
+  padding: 6px 10px; /* Aumentado de 4px 8px */
   border-radius: 999px;
   font-size: 12px;
 }
@@ -503,25 +503,29 @@ body {
 .has-tip[data-tip]::after {
   content: attr(data-tip);
   left: 50%;
-  bottom: calc(100% + 8px);
+  bottom: calc(100% + 12px);
   transform: translate(-50%, 4px);
   white-space: nowrap;
   background: rgba(33, 37, 41, .95);
   color: #fff;
   font-size: 12px;
-  padding: 8px 10px;
+  padding: 8px 12px;
   border-radius: 8px;
-  z-index: 20;
+  z-index: 10000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .has-tip[data-tip]::before {
   content: "";
   left: 50%;
   bottom: 100%;
-  transform: translate(-50%, 8px);
+  transform: translate(-50%, 12px);
   border: 6px solid transparent;
   border-top-color: rgba(33, 37, 41, .95);
-  z-index: 19;
+  z-index: 9999;
 }
 
 .has-tip:hover[data-tip]::after,
@@ -545,17 +549,17 @@ body {
 .detail .rider-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
+  gap: 20px; /* Aumentado de 16px */
+  padding: 20px; /* Aumentado de 16px */
   border-bottom: 1px solid var(--line);
   background: #fff;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+  border-top-left-radius: 18px; /* Ajustado para nova border-radius */
+  border-top-right-radius: 18px; /* Ajustado para nova border-radius */
 }
 
 .rider-hero {
-  width: 72px;
-  height: 72px;
+  width: 80px; /* Aumentado de 72px */
+  height: 80px; /* Aumentado de 72px */
   border-radius: 50%;
   flex: 0 0 auto;
   overflow: hidden;
@@ -564,7 +568,7 @@ body {
   justify-content: center;
   font-weight: 800;
   color: #fff;
-  font-size: 22px;
+  font-size: 24px; /* Aumentado de 22px */
   box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
 }
 
@@ -578,18 +582,18 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px; /* Aumentado de 6px */
 }
 
 .rider-name {
-  font-size: 20px;
+  font-size: 22px; /* Aumentado de 20px */
   font-weight: 800;
   color: #0f172a;
 }
 
 .rider-badges {
   display: flex;
-  gap: 8px;
+  gap: 10px; /* Aumentado de 8px */
   flex-wrap: wrap
 }
 
@@ -597,32 +601,32 @@ body {
   background: #f8fafc;
   border: 1px solid var(--line);
   color: #334155;
-  padding: 6px 10px;
+  padding: 8px 12px; /* Aumentado de 6px 10px */
   border-radius: 999px;
   font-size: 12px;
 }
 
 .actions-bar {
   display: flex;
-  gap: 8px;
-  padding: 12px 16px;
+  gap: 12px; /* Aumentado de 8px */
+  padding: 16px 20px; /* Aumentado de 12px 16px */
   background: #f9fafb;
   border-bottom: 1px solid var(--line);
 }
 
 .actions-bar .btn {
-  padding: 8px 12px;
-  border-radius: 10px
+  padding: 10px 16px; /* Aumentado de 8px 12px */
+  border-radius: 12px; /* Aumentado de 10px */
 }
 
 .detail-section {
-  padding: 16px;
+  padding: 20px; /* Aumentado de 16px */
 }
 
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  gap: 16px; /* Aumentado de 12px */
 }
 
 @media (max-width: 1100px) {
@@ -634,8 +638,8 @@ body {
 .stat {
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 14px; /* Aumentado de 12px */
+  padding: 16px; /* Aumentado de 12px */
 }
 
 .stat .k {
@@ -645,15 +649,15 @@ body {
 
 .stat .v {
   font-weight: 800;
-  font-size: 18px;
-  margin-top: 4px;
+  font-size: 20px; /* Aumentado de 18px */
+  margin-top: 6px; /* Aumentado de 4px */
 }
 
 .info-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 12px;
+  gap: 16px; /* Aumentado de 12px */
+  margin-top: 16px; /* Aumentado de 12px */
 }
 
 @media (max-width: 1100px) {
@@ -665,8 +669,8 @@ body {
 .info-card {
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 14px; /* Aumentado de 12px */
+  padding: 16px; /* Aumentado de 12px */
 }
 
 .info-card .label {
@@ -679,18 +683,18 @@ body {
 }
 
 .timeline {
-  margin-top: 12px;
+  margin-top: 16px; /* Aumentado de 12px */
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 14px; /* Aumentado de 12px */
+  padding: 16px; /* Aumentado de 12px */
 }
 
 .timeline .item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 8px 0;
+  gap: 12px; /* Aumentado de 10px */
+  padding: 10px 0; /* Aumentado de 8px 0 */
   border-top: 1px dashed #eaeaea;
 }
 
@@ -699,11 +703,11 @@ body {
 }
 
 .timeline .dot {
-  width: 10px;
-  height: 10px;
+  width: 12px; /* Aumentado de 10px */
+  height: 12px; /* Aumentado de 10px */
   border-radius: 50%;
   background: var(--primary);
-  margin-top: 5px;
+  margin-top: 6px; /* Aumentado de 5px */
 }
 
 .timeline .when {
@@ -714,34 +718,34 @@ body {
 
 /* ===== Calendário (Admin Vagas) ===== */
 .calendar {
-  padding: 12px;
+  padding: 16px; /* Aumentado de 12px */
 }
 
 .cal-head {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  gap: 8px; /* Aumentado de 6px */
   color: var(--muted);
   font-size: 12px;
-  padding: 4px 0 8px;
+  padding: 6px 0 12px; /* Aumentado de 4px 0 8px */
 }
 
 .cal-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
+  gap: 12px; /* Aumentado de 8px */
   min-height: 0;
 }
 
 .cal-day {
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px;
-  min-height: 80px;
+  border-radius: 14px; /* Aumentado de 12px */
+  padding: 12px; /* Aumentado de 10px */
+  min-height: 90px; /* Aumentado de 80px */
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px; /* Aumentado de 6px */
   cursor: pointer;
   transition: box-shadow .15s, transform .05s;
 }
@@ -763,13 +767,13 @@ body {
 
 .cal-day .chips {
   display: flex;
-  gap: 4px;
+  gap: 6px; /* Aumentado de 4px */
   flex-wrap: wrap;
 }
 
 .cal-day .chip {
   font-size: 11px;
-  padding: 2px 6px;
+  padding: 3px 8px; /* Aumentado de 2px 6px */
   border-radius: 999px;
   border: 1px solid var(--line);
   background: #f3f4f6;
@@ -779,12 +783,12 @@ body {
 .turn-editor .row {
   display: grid;
   grid-template-columns: 1fr auto auto;
-  gap: 10px;
+  gap: 12px; /* Aumentado de 10px */
   align-items: center;
 }
 
 .turn-editor .row+.row {
-  margin-top: 10px;
+  margin-top: 12px; /* Aumentado de 10px */
 }
 
 .turn-editor .lbl {
@@ -793,13 +797,246 @@ body {
 
 .turn-editor input[type="number"] {
   width: 90px;
-  padding: 8px;
+  padding: 10px; /* Aumentado de 8px */
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 12px; /* Aumentado de 10px */
   outline: none;
 }
 
 .turn-editor input[type="number"]:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(0, 123, 255, .15);
+}
+
+/* ====== MARGENS MAIORES ====== */
+body {
+  margin: 40px !important;
+  padding: 0;
+}
+
+.app {
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  margin: 0;
+  padding: 0;
+}
+
+.left, .right {
+  margin: 0;
+  padding: 0;
+}
+
+/* ====== ESPAÇAMENTO PARA TOOLTIPS ====== */
+.topbar {
+  margin-bottom: 20px;
+}
+
+/* Aumentar padding interno da sidebar */
+.sidebar {
+  padding: 20px 12px !important;
+  gap: 16px !important;
+}
+
+/* Aumentar tamanho dos botões da sidebar */
+.side-icon {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 14px !important;
+}
+
+/* Garantir que tooltips não sejam cortados */
+.has-tip {
+  position: relative;
+}
+
+/* Ajustar posicionamento dos tooltips */
+.has-tip::after {
+  z-index: 10000;
+  white-space: nowrap;
+}
+
+/* utilitários locais */
+.hidden { display: none; }
+
+/* avatar por iniciais (fallback quando não há foto) */
+.avatar-circle {
+  width: 60px; height: 60px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; flex: 0 0 auto;
+}
+
+/* grid compacta dentro do painel da direita */
+.detail .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1024px) { .detail .grid { grid-template-columns: 1fr; } }
+
+/* mini estatística em cards */
+.mini { border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: 10px; }
+.mini .k { color: var(--muted); font-size: 12px; }
+.mini .v { font-weight: 700; font-size: 16px; }
+
+/* CSS mínimo do Calendário (Admin Vagas) – o resto está no styles.css */
+.calendar{ padding:12px; }
+.cal-head{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; color:var(--muted); font-size:12px; padding:4px 0 8px; }
+.cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; min-height:0; }
+.cal-day{
+  background:#fff; border:1px solid var(--line); border-radius:12px;
+  padding:10px; min-height:80px; display:flex; flex-direction:column; gap:6px;
+  cursor:pointer; transition:box-shadow .15s, transform .05s;
+}
+.cal-day:hover{ box-shadow:0 2px 8px rgba(0,0,0,.08); transform:translateY(-1px); }
+.cal-day.inactive{ background:#f8f9fa; color:#98a2b3; cursor:default; }
+.cal-day .num{ font-weight:800; }
+.cal-day .chips{ display:flex; gap:4px; flex-wrap:wrap; }
+.cal-day .chip{ font-size:11px; padding:2px 6px; border-radius:999px; border:1px solid var(--line); background:#f3f4f6; }
+
+/* Editor de turnos no painel direito */
+.turn-editor .row{ display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center; }
+.turn-editor .row + .row{ margin-top:10px; }
+.turn-editor .lbl{ font-weight:700; }
+.turn-editor input[type="number"]{ width:90px; padding:8px; border:1px solid var(--line); border-radius:10px; outline:none; }
+.turn-editor input[type="number"]:focus{ border-color:var(--primary); box-shadow:0 0 0 3px rgba(0,123,255,.15); }
+
+/* ====== ESTILOS DA TELA DE LOGIN ====== */
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  color: #333;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-logo {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  color: #666;
+  font-size: 14px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e1e5e9;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.login-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 8px;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+}
+
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.login-status {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+  display: none;
+}
+
+.login-status.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.login-status.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.login-credentials {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e1e5e9;
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+}
+
+.login-credentials > div {
+  margin-bottom: 4px;
 }
