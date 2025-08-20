@@ -93,3 +93,7 @@ npm start
 A aplicação Electron agora inicializa com a janela maximizada, proporcionando uma melhor experiência do usuário desde o primeiro uso.
 
 
+
+
+
+

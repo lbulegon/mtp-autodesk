@@ -96,3 +96,7 @@ console.log('Container:', document.getElementById('list-vagas'));
 **Status**: ✅ ORDEM DE CARREGAMENTO CORRIGIDA - DEVE FUNCIONAR AGORA!
 
 
+
+
+
+

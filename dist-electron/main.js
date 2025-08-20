@@ -9,6 +9,12 @@ const electron_1 = require("electron");
 const node_path_1 = __importDefault(require("node:path"));
 const node_fs_1 = __importDefault(require("node:fs"));
 let API_BASE_URL = process.env.API_BASE_URL || "http://127.0.0.1:8000/api/v1";
+// Configurações de desalocação das variáveis de ambiente
+let DESALOCACAO_CONFIG = {
+    motivo_padrao: process.env.DESALOCACAO_MOTIVO || "Desalocação solicitada pelo gestor",
+    bloqueia_retorno: process.env.DESALOCACAO_BLOQUEIA_RETORNO === "true" || false,
+    endpoint: process.env.DESALOCACAO_ENDPOINT || "/motoboy-vaga/cancelar-candidatura/"
+};
 let win = null;
 function resolveIndexHtml() {
     // Ajuste se seu index.html estiver noutro lugar
@@ -42,6 +48,10 @@ electron_1.ipcMain.handle("api:setBaseUrl", (_evt, url) => {
         API_BASE_URL = url.trim().replace(/\/+$/, ""); // remove / no final
     }
     return true;
+});
+// Handler para obter configurações de desalocação
+electron_1.ipcMain.handle("api:getDesalocacaoConfig", () => {
+    return DESALOCACAO_CONFIG;
 });
 electron_1.ipcMain.handle("api:request", async (_evt, args) => {
     const method = (args.method || "GET").toUpperCase();

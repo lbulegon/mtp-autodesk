@@ -62,3 +62,7 @@ Candidaturas: 3 • Alocados: 2/4
 **Status**: ✅ CORREÇÕES APLICADAS - TESTE AGORA!
 
 
+
+
+
+

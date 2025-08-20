@@ -86,3 +86,7 @@ console.log('Container:', document.getElementById('list-vagas'));
 **Status**: ✅ SEM PLACEHOLDERS - DEVE FUNCIONAR AGORA!
 
 
+
+
+
+

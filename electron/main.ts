@@ -8,6 +8,13 @@ import fs from "node:fs";
 let API_BASE_URL: string =
   process.env.API_BASE_URL || "http://127.0.0.1:8000/api/v1";
 
+// Configurações de desalocação das variáveis de ambiente
+let DESALOCACAO_CONFIG = {
+  motivo_padrao: process.env.DESALOCACAO_MOTIVO || "Desalocação solicitada pelo gestor",
+  bloqueia_retorno: process.env.DESALOCACAO_BLOQUEIA_RETORNO === "true" || false,
+  endpoint: process.env.DESALOCACAO_ENDPOINT || "/motoboy-vaga/cancelar-candidatura/"
+};
+
 let win: BrowserWindow | null = null;
 
 function resolveIndexHtml() {
@@ -48,6 +55,11 @@ ipcMain.handle("api:setBaseUrl", (_evt, url: string) => {
     API_BASE_URL = url.trim().replace(/\/+$/, ""); // remove / no final
   }
   return true;
+});
+
+// Handler para obter configurações de desalocação
+ipcMain.handle("api:getDesalocacaoConfig", () => {
+  return DESALOCACAO_CONFIG;
 });
 
 type ApiRequestArgs = {

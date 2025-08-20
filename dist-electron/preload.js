@@ -37,6 +37,8 @@ const api = {
         tokens.access = access ?? null;
         tokens.refresh = refresh ?? null;
     },
+    // Obter configurações de desalocação das variáveis de ambiente
+    getDesalocacaoConfig: () => electron_1.ipcRenderer.invoke("api:getDesalocacaoConfig"),
     // Chamadas específicas que você precisa no renderer:
     async getAlocacoesAgora(estabelecimentoId) {
         const qs = estabelecimentoId

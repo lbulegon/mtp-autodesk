@@ -446,7 +446,7 @@ window.viewAlocacaoDetails = function(alocacaoId) {
                         <button class="btn btn-outline" style="flex: 1; padding: 10px 16px; font-size: 14px;">
                             ✏️ Editar Alocação
                         </button>
-                        <button class="btn btn-danger" style="flex: 1; padding: 10px 16px; font-size: 14px;">
+                        <button class="btn btn-danger" style="flex: 1; padding: 10px 16px; font-size: 14px;" onclick="desalocarMotoboy(${alocacao.id})">
                             ❌ Desalocar Motoboy
                         </button>
                     </div>
@@ -459,12 +459,88 @@ window.viewAlocacaoDetails = function(alocacaoId) {
 window.desalocarMotoboy = function(alocacaoId) {
     console.log('❌ Desalocando motoboy da alocação:', alocacaoId);
     
-    if (confirm(`Deseja desalocar o motoboy da alocação #${alocacaoId}?`)) {
-        // Aqui você implementaria a chamada para a API de desalocação
-        alert(`Motoboy desalocado da alocação #${alocacaoId} com sucesso!`);
-        renderAlocacoes(); // Recarregar a lista
+    // Encontrar os dados da alocação
+    const alocacao = alocacoesData.find(a => a.id == alocacaoId);
+    if (!alocacao) {
+        alert('❌ Alocação não encontrada!');
+        return;
+    }
+    
+    if (confirm(`Deseja desalocar o motoboy ${alocacao.motoboy?.nome || 'N/A'} da alocação #${alocacaoId}?`)) {
+        // Chamada para a API de desalocação
+        cancelarCandidatura(alocacao);
     }
 };
+
+async function cancelarCandidatura(alocacao) {
+    try {
+        console.log('🔄 Cancelando candidatura...', alocacao);
+        
+        // Verificar se está autenticado
+        if (!window.authManager || !window.authManager.isAuthenticated) {
+            alert('❌ Usuário não autenticado - faça login primeiro');
+            return;
+        }
+        
+        // Obter configurações das variáveis de ambiente
+        let desalocacaoConfig;
+        try {
+            desalocacaoConfig = await window.api.getDesalocacaoConfig();
+            console.log('⚙️ Configurações de desalocação:', desalocacaoConfig);
+        } catch (error) {
+            console.warn('⚠️ Erro ao obter configurações, usando valores padrão:', error);
+            desalocacaoConfig = {
+                motivo_padrao: "Desalocação solicitada pelo gestor",
+                bloqueia_retorno: false,
+                endpoint: "/motoboy-vaga/cancelar-candidatura/"
+            };
+        }
+        
+        // Log para debug dos dados da alocação
+        console.log('🔍 Dados da alocação para desalocação:', {
+            alocacao_id: alocacao.id,
+            motoboy_id: alocacao.motoboy?.id,
+            motoboy_nome: alocacao.motoboy?.nome,
+            vaga_id: alocacao.vaga_id,
+            estabelecimento: alocacao.estabelecimento_nome
+        });
+        
+        const payload = {
+            motoboy: alocacao.motoboy?.id,
+            vaga: alocacao.vaga_id,
+            motivo: desalocacaoConfig.motivo_padrao,
+            bloqueia_retorno: desalocacaoConfig.bloqueia_retorno
+        };
+        
+        console.log('📤 Payload da requisição:', payload);
+        
+        // Usar o AuthManager para fazer a requisição autenticada
+        const response = await window.authManager.authenticatedRequest(desalocacaoConfig.endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        console.log('📊 Status da resposta:', response.status);
+        
+        if (response.ok) {
+            const result = await response.json();
+            console.log('✅ Candidatura cancelada com sucesso:', result);
+            alert(`✅ Motoboy ${alocacao.motoboy?.nome || 'N/A'} desalocado com sucesso!`);
+            renderAlocacoes(); // Recarregar a lista
+        } else {
+            const errorText = await response.text();
+            console.error('❌ Erro na API:', response.status, errorText);
+            alert(`❌ Erro ao desalocar: ${response.status} - ${errorText}`);
+        }
+        
+    } catch (error) {
+        console.error('❌ Erro ao cancelar candidatura:', error);
+        alert(`❌ Erro ao desalocar: ${error.message}`);
+    }
+}
 
 // ====== INICIALIZAÇÃO ======
 console.log('🚀 Carregando módulo de integração de alocações...');

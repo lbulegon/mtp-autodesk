@@ -96,3 +96,7 @@ console.log('Container:', document.getElementById('list-vagas'));
 **Status**: ✅ FUNÇÃO GLOBAL EXPOSTA - DEVE FUNCIONAR AGORA!
 
 
+
+
+
+

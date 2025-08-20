@@ -91,3 +91,7 @@ console.log('Container:', document.getElementById('list-vagas'));
 **Status**: ✅ VERSÃO SIMPLIFICADA - DEVE FUNCIONAR!
 
 
+
+
+
+
