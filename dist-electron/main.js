@@ -15,6 +15,10 @@ let DESALOCACAO_CONFIG = {
     bloqueia_retorno: process.env.DESALOCACAO_BLOQUEIA_RETORNO === "true" || false,
     endpoint: process.env.DESALOCACAO_ENDPOINT || "/motoboy-vaga/cancelar-candidatura/"
 };
+// Configuração do estabelecimento para gerar vagas
+let ESTABELECIMENTO_CONFIG = {
+    estabelecimento_id: process.env.ESTABELECIMENTO_ID || "11"
+};
 let win = null;
 function resolveIndexHtml() {
     // Ajuste se seu index.html estiver noutro lugar
@@ -52,6 +56,10 @@ electron_1.ipcMain.handle("api:setBaseUrl", (_evt, url) => {
 // Handler para obter configurações de desalocação
 electron_1.ipcMain.handle("api:getDesalocacaoConfig", () => {
     return DESALOCACAO_CONFIG;
+});
+// Handler para obter configuração do estabelecimento
+electron_1.ipcMain.handle("api:getEstabelecimentoConfig", () => {
+    return ESTABELECIMENTO_CONFIG;
 });
 electron_1.ipcMain.handle("api:request", async (_evt, args) => {
     const method = (args.method || "GET").toUpperCase();

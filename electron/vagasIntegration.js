@@ -248,6 +248,7 @@ window.viewVagaDetails = function(vagaId) {
                     <button class="btn-outline">Editar Vaga</button>
                     ${vaga.status === 'aberta' ? `<button class="btn-primary">Iniciar Vaga</button>` : ''}
                     <button class="btn-danger">Encerrar Vaga</button>
+                    <button class="btn btn-outline" onclick="fecharECandidatar(${vaga.id})">Fechar e Candidatar</button>
                 </div>
             `;
         }
@@ -260,6 +261,41 @@ window.startVaga = function(vagaId) {
     if (confirm(`Deseja iniciar a vaga #${vagaId}?`)) {
         alert(`Vaga #${vagaId} iniciada com sucesso!`);
         renderVagasInSidebar(); // Recarregar a lista
+    }
+};
+
+window.fecharECandidatar = async function(vagaId) {
+    console.log('🔒 Fechando e candidatando vaga:', vagaId);
+    
+    try {
+        // Verificar se está autenticado
+        if (!window.authManager || !window.authManager.isAuthenticated) {
+            alert('❌ Usuário não autenticado - faça login primeiro');
+            return;
+        }
+        
+        if (confirm(`Deseja fechar a vaga #${vagaId} e gerar candidaturas?`)) {
+            // Chamar o endpoint para fechar e candidatar
+            const response = await window.authManager.authenticatedRequest(`/vagas/${vagaId}/fechar-e-candidatar/`, {
+                method: 'POST'
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                alert(`✅ Vaga #${vagaId} fechada e candidaturas geradas com sucesso!`);
+                console.log('✅ Resultado da operação:', result);
+                
+                // Recarregar a lista de vagas
+                await renderVagasInSidebar();
+            } else {
+                const errorText = await response.text();
+                console.error('❌ Erro ao fechar e candidatar vaga:', errorText);
+                alert(`❌ Erro ao fechar e candidatar vaga: ${errorText}`);
+            }
+        }
+    } catch (error) {
+        console.error('❌ Erro ao fechar e candidatar vaga:', error);
+        alert(`❌ Erro: ${error.message}`);
     }
 };
 

@@ -15,6 +15,11 @@ let DESALOCACAO_CONFIG = {
   endpoint: process.env.DESALOCACAO_ENDPOINT || "/motoboy-vaga/cancelar-candidatura/"
 };
 
+// Configuração do estabelecimento para gerar vagas
+let ESTABELECIMENTO_CONFIG = {
+  estabelecimento_id: process.env.ESTABELECIMENTO_ID || "11"
+};
+
 let win: BrowserWindow | null = null;
 
 function resolveIndexHtml() {
@@ -60,6 +65,11 @@ ipcMain.handle("api:setBaseUrl", (_evt, url: string) => {
 // Handler para obter configurações de desalocação
 ipcMain.handle("api:getDesalocacaoConfig", () => {
   return DESALOCACAO_CONFIG;
+});
+
+// Handler para obter configuração do estabelecimento
+ipcMain.handle("api:getEstabelecimentoConfig", () => {
+  return ESTABELECIMENTO_CONFIG;
 });
 
 type ApiRequestArgs = {

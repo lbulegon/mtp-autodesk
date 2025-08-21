@@ -1,81 +1,70 @@
-# Variáveis de Ambiente - Configuração de Desalocação
+# Variáveis de Ambiente - MotoPro Desktop
 
-## 📋 Configurações Disponíveis
+## Configuração
 
-### API Base
-```bash
-API_BASE_URL=https://motopro-development.up.railway.app/api/v1
-```
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
-### Desalocação de Motoboys
-```bash
-# Motivo padrão para desalocação
-DESALOCACAO_MOTIVO=Desalocação solicitada pelo gestor
-
-# Se deve bloquear o retorno do motoboy
-DESALOCACAO_BLOQUEIA_RETORNO=false
-
-# Endpoint da API para cancelar candidatura
-DESALOCACAO_ENDPOINT=/motoboy-vaga/cancelar-candidatura/
-```
-
-## 🚀 Como Configurar
-
-### 1. Criar arquivo `.env` na raiz do projeto:
-```bash
-# Configurações da API
+```env
+# URL base da API
 API_BASE_URL=https://motopro-development.up.railway.app/api/v1
 
-# Configurações de Desalocação
-DESALOCACAO_MOTIVO=Desalocação solicitada pelo gestor
+# Configurações de desalocação
+DESALOCACAO_MOTIVO=Não poderá comparecer
 DESALOCACAO_BLOQUEIA_RETORNO=false
 DESALOCACAO_ENDPOINT=/motoboy-vaga/cancelar-candidatura/
+
+# Configuração do estabelecimento para gerar vagas
+ESTABELECIMENTO_ID=11
 ```
 
-### 2. Valores Padrão (se não configurados):
-- `DESALOCACAO_MOTIVO`: "Desalocação solicitada pelo gestor"
-- `DESALOCACAO_BLOQUEIA_RETORNO`: false
-- `DESALOCACAO_ENDPOINT`: "/motoboy-vaga/cancelar-candidatura/"
+## Variáveis Disponíveis
 
-## 🔧 Implementação
+### `API_BASE_URL`
+- **Descrição**: URL base da API do MotoPro
+- **Padrão**: `http://127.0.0.1:8000/api/v1`
+- **Exemplo**: `https://motopro-development.up.railway.app/api/v1`
 
-As configurações são carregadas no `main.ts` e expostas via IPC para o renderer process.
+### `DESALOCACAO_MOTIVO`
+- **Descrição**: Motivo padrão para desalocação de motoboys
+- **Padrão**: `Desalocação solicitada pelo gestor`
+- **Exemplo**: `Não poderá comparecer`
 
-### No Main Process (`electron/main.ts`):
-```typescript
-let DESALOCACAO_CONFIG = {
-  motivo_padrao: process.env.DESALOCACAO_MOTIVO || "Desalocação solicitada pelo gestor",
-  bloqueia_retorno: process.env.DESALOCACAO_BLOQUEIA_RETORNO === "true" || false,
-  endpoint: process.env.DESALOCACAO_ENDPOINT || "/motoboy-vaga/cancelar-candidatura/"
-};
+### `DESALOCACAO_BLOQUEIA_RETORNO`
+- **Descrição**: Se deve bloquear o retorno do motoboy após desalocação
+- **Padrão**: `false`
+- **Valores**: `true` ou `false`
+
+### `DESALOCACAO_ENDPOINT`
+- **Descrição**: Endpoint para cancelar candidatura de motoboy
+- **Padrão**: `/motoboy-vaga/cancelar-candidatura/`
+- **Exemplo**: `/motoboy-vaga/cancelar-candidatura/`
+
+### `ESTABELECIMENTO_ID`
+- **Descrição**: ID do estabelecimento para gerar vagas fixas
+- **Padrão**: `11`
+- **Exemplo**: `11`
+
+## Payload de Desalocação
+
+O payload enviado para o endpoint de desalocação é:
+
+```json
+{
+  "motoboy": 18,
+  "vaga": 630,
+  "motivo": "Não poderá comparecer",
+  "bloqueia_retorno": false
+}
 ```
 
-### No Renderer Process (`alocacoesIntegration.js`):
-```javascript
-// Obter configurações das variáveis de ambiente
-const desalocacaoConfig = await window.api.getDesalocacaoConfig();
+## Payload de Geração de Vagas Fixas
 
-const payload = {
-  motoboy: alocacao.motoboy?.id,
-  vaga: alocacao.vaga_id,
-  motivo: desalocacaoConfig.motivo_padrao,
-  bloqueia_retorno: desalocacaoConfig.bloqueia_retorno
-};
-```
+O payload enviado para o endpoint de geração de vagas fixas é:
 
-## 📝 Exemplo de Uso
-
-Quando um gestor clica em "Desalocar", o sistema:
-
-1. **Carrega** as configurações das variáveis de ambiente
-2. **Monta** o payload com os valores configurados
-3. **Envia** a requisição para o endpoint configurado
-4. **Processa** a resposta da API
-
-## 🔄 Recompilação
-
-Após alterar as variáveis de ambiente, recompile a aplicação:
-```bash
-npm run build
-npm start
+```json
+{
+  "estabelecimento_id": 11,
+  "data_inicio": "2025-08-22",
+  "dias": 1
+}
 ```

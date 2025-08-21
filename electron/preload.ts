@@ -41,29 +41,9 @@ async function request(
 
 const api = {
   setBaseUrl: (url: string) => ipcRenderer.invoke("api:setBaseUrl", url),
-
-  setTokens: (access?: string, refresh?: string) => {
-    tokens.access = access ?? null;
-    tokens.refresh = refresh ?? null;
-  },
-
-  // Obter configurações de desalocação das variáveis de ambiente
+  request: (args: any) => ipcRenderer.invoke("api:request", args),
   getDesalocacaoConfig: () => ipcRenderer.invoke("api:getDesalocacaoConfig"),
-
-  // Chamadas específicas que você precisa no renderer:
-  async getAlocacoesAgora(estabelecimentoId?: number) {
-    const qs = estabelecimentoId
-      ? `?estabelecimento_id=${encodeURIComponent(estabelecimentoId)}`
-      : "";
-    const res = await request("GET", `/alocacoes/ativas/agora/${qs}`);
-    if (res.status !== 200) throw new Error(`HTTP ${res.status}`);
-    return res.data; // {agora, estabelecimentos: [...]}
-  },
-
-  // request genérica (se quiser reusar)
-  async request(method: string, path: string, body?: any) {
-    return request(method, path, body);
-  },
+  getEstabelecimentoConfig: () => ipcRenderer.invoke("api:getEstabelecimentoConfig")
 };
 
 contextBridge.exposeInMainWorld("api", api);
