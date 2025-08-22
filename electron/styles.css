@@ -1116,3 +1116,185 @@ body {
   background: #ecf0f1;
   color: #7f8c8d;
 }
+
+/* ===== LAYOUT EM GRADE PARA VAGAS ===== */
+.vagas-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+  gap: 16px !important;
+  padding: 16px !important;
+  max-height: calc(100vh - 200px) !important;
+  overflow-y: auto !important;
+}
+
+/* Layout específico para o painel direito (Admin Vagas) */
+.detail .vagas-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+  gap: 12px !important;
+  padding: 12px !important;
+  max-height: calc(100vh - 300px) !important;
+  overflow-y: auto !important;
+}
+
+.detail .vaga-card {
+  padding: 12px;
+  font-size: 12px;
+}
+
+.detail .vaga-id {
+  font-size: 14px;
+}
+
+.detail .vaga-estabelecimento {
+  font-size: 13px;
+}
+
+.detail .vaga-horario,
+.detail .vaga-data,
+.detail .vaga-tipo,
+.detail .vaga-local {
+  font-size: 11px;
+}
+
+.detail .vaga-actions .btn {
+  font-size: 10px;
+  padding: 4px 6px;
+}
+
+.vaga-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.vaga-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+}
+
+.vaga-card:active {
+  transform: translateY(0);
+}
+
+.vaga-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.vaga-id {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.vaga-status {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vaga-status.aberta {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.vaga-status.encerrada {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.vaga-status.em_andamento {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.vaga-info {
+  margin-bottom: 12px;
+}
+
+.vaga-estabelecimento {
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.vaga-horario {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.vaga-data {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.vaga-tipo {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.vaga-local {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.vaga-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.vaga-actions .btn {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  padding: 6px 8px;
+  white-space: nowrap;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .vagas-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .vaga-card {
+    padding: 12px;
+  }
+}
+
+/* Para telas médias */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .vagas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 14px;
+  }
+}
+
+/* Para telas grandes */
+@media (min-width: 1201px) {
+  .vagas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+  }
+}

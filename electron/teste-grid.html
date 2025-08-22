@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Layout em Grade</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f8f9fa;
+        }
+        
+        .vagas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+            padding: 12px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .vaga-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .vaga-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #007bff;
+        }
+        
+        .vaga-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .vaga-id {
+            font-weight: 700;
+            font-size: 14px;
+            color: #212529;
+        }
+        
+        .vaga-status {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .vaga-status.aberta {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .vaga-status.encerrada {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .vaga-info {
+            margin-bottom: 12px;
+        }
+        
+        .vaga-estabelecimento {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+        
+        .vaga-horario {
+            color: #007bff;
+            font-weight: 600;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+        
+        .vaga-data {
+            color: #6c757d;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+        
+        .vaga-tipo {
+            color: #6c757d;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+        
+        .vaga-local {
+            color: #6c757d;
+            font-size: 11px;
+        }
+        
+        .vaga-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            font-size: 10px;
+            padding: 4px 6px;
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .btn-outline {
+            color: #6c757d;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Teste Layout em Grade - Vagas</h1>
+    
+    <div class="vagas-grid">
+        <div class="vaga-card">
+            <div class="vaga-header">
+                <div class="vaga-id">#123</div>
+                <div class="vaga-status aberta">Aberta</div>
+            </div>
+            <div class="vaga-info">
+                <div class="vaga-estabelecimento">Restaurante Central</div>
+                <div class="vaga-horario">🕐 08:00 - 12:00</div>
+                <div class="vaga-data">📅 15/12/2024</div>
+                <div class="vaga-tipo">📋 Turno Manhã</div>
+                <div class="vaga-local">📍 Zona Sul</div>
+            </div>
+            <div class="vaga-actions">
+                <button class="btn btn-outline">Ver Detalhes</button>
+                <button class="btn btn-primary">Iniciar</button>
+            </div>
+        </div>
+        
+        <div class="vaga-card">
+            <div class="vaga-header">
+                <div class="vaga-id">#124</div>
+                <div class="vaga-status encerrada">Encerrada</div>
+            </div>
+            <div class="vaga-info">
+                <div class="vaga-estabelecimento">Pizzaria Express</div>
+                <div class="vaga-horario">🕐 18:00 - 22:00</div>
+                <div class="vaga-data">📅 14/12/2024</div>
+                <div class="vaga-tipo">📋 Turno Noite</div>
+                <div class="vaga-local">📍 Zona Leste</div>
+            </div>
+            <div class="vaga-actions">
+                <button class="btn btn-outline">Ver Detalhes</button>
+            </div>
+        </div>
+        
+        <div class="vaga-card">
+            <div class="vaga-header">
+                <div class="vaga-id">#125</div>
+                <div class="vaga-status aberta">Aberta</div>
+            </div>
+            <div class="vaga-info">
+                <div class="vaga-estabelecimento">Hamburgueria Premium</div>
+                <div class="vaga-horario">🕐 12:00 - 16:00</div>
+                <div class="vaga-data">📅 16/12/2024</div>
+                <div class="vaga-tipo">📋 Turno Almoço</div>
+                <div class="vaga-local">📍 Zona Oeste</div>
+            </div>
+            <div class="vaga-actions">
+                <button class="btn btn-outline">Ver Detalhes</button>
+                <button class="btn btn-primary">Iniciar</button>
+            </div>
+        </div>
+        
+        <div class="vaga-card">
+            <div class="vaga-header">
+                <div class="vaga-id">#126</div>
+                <div class="vaga-status aberta">Aberta</div>
+            </div>
+            <div class="vaga-info">
+                <div class="vaga-estabelecimento">Sushi Bar</div>
+                <div class="vaga-horario">🕐 19:00 - 23:00</div>
+                <div class="vaga-data">📅 17/12/2024</div>
+                <div class="vaga-tipo">📋 Turno Jantar</div>
+                <div class="vaga-local">📍 Zona Norte</div>
+            </div>
+            <div class="vaga-actions">
+                <button class="btn btn-outline">Ver Detalhes</button>
+                <button class="btn btn-primary">Iniciar</button>
+            </div>
+        </div>
+        
+        <div class="vaga-card">
+            <div class="vaga-header">
+                <div class="vaga-id">#127</div>
+                <div class="vaga-status encerrada">Encerrada</div>
+            </div>
+            <div class="vaga-info">
+                <div class="vaga-estabelecimento">Café Gourmet</div>
+                <div class="vaga-horario">🕐 07:00 - 11:00</div>
+                <div class="vaga-data">📅 13/12/2024</div>
+                <div class="vaga-tipo">📋 Turno Café</div>
+                <div class="vaga-local">📍 Centro</div>
+            </div>
+            <div class="vaga-actions">
+                <button class="btn btn-outline">Ver Detalhes</button>
+            </div>
+        </div>
+        
+        <div class="vaga-card">
+            <div class="vaga-header">
+                <div class="vaga-id">#128</div>
+                <div class="vaga-status aberta">Aberta</div>
+            </div>
+            <div class="vaga-info">
+                <div class="vaga-estabelecimento">Sorveteria Artesanal</div>
+                <div class="vaga-horario">🕐 14:00 - 18:00</div>
+                <div class="vaga-data">📅 18/12/2024</div>
+                <div class="vaga-tipo">📋 Turno Tarde</div>
+                <div class="vaga-local">📍 Zona Sul</div>
+            </div>
+            <div class="vaga-actions">
+                <button class="btn btn-outline">Ver Detalhes</button>
+                <button class="btn btn-primary">Iniciar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        console.log('🎨 Teste de layout em grade carregado');
+        console.log('📋 Grid CSS aplicado:', document.querySelector('.vagas-grid').style.display);
+    </script>
+</body>
+</html>
+
+
