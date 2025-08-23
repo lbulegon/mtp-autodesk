@@ -1101,6 +1101,65 @@ body {
   vertical-align: middle;
 }
 
+/* Estilos para o botão Gerar Vagas Extras */
+#btnGerarVagasExtras {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+}
+
+#btnGerarVagasExtras:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+}
+
+#btnGerarVagasExtras:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(243, 156, 18, 0.3);
+}
+
+#btnGerarVagasExtras:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(243, 156, 18, 0.2);
+}
+
+#btnGerarVagasExtras span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Estilos para os campos de vagas extras */
+#dataInicioVagasExtras,
+#quantidadeVagasExtras,
+#turnoVagasExtras {
+  transition: all 0.3s ease;
+}
+
+#dataInicioVagasExtras:hover,
+#quantidadeVagasExtras:hover,
+#turnoVagasExtras:hover {
+  border-color: #f39c12;
+  box-shadow: 0 2px 6px rgba(243, 156, 18, 0.15);
+}
+
+#dataInicioVagasExtras:focus,
+#quantidadeVagasExtras:focus,
+#turnoVagasExtras:focus {
+  border-color: #f39c12;
+  box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+  outline: none;
+}
+
 /* Estilos para chips de status */
 .chip-success {
   background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
