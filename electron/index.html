@@ -98,6 +98,209 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
       border-color: var(--primary) !important;
     }
+
+    /* Estilos para a interface de Rotas */
+    .card-status {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .status-active {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-badge.pendente {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge.emandamento {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .status-badge.concluida {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-badge.cancelada {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .detail-info {
+      margin-bottom: 20px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .detail-stats {
+      margin-bottom: 20px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .progress-bar {
+      position: relative;
+      height: 20px;
+      background: #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 12px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .detail-deliveries {
+      margin-bottom: 20px;
+    }
+
+    .deliveries-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .delivery-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 8px;
+      background: #f8fafc;
+      border-radius: 8px;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .delivery-order {
+      width: 32px;
+      height: 32px;
+      background: #3b82f6;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-right: 12px;
+    }
+
+    .delivery-info {
+      flex: 1;
+    }
+
+    .delivery-client {
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .delivery-address {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .delivery-value {
+      font-size: 12px;
+      color: #059669;
+      font-weight: 600;
+    }
+
+    .delivery-status {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .delivery-status.pendente {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .delivery-status.entregue {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .delivery-status.em_entrega {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .detail-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
     
     .vaga-header {
       display: flex !important;
@@ -249,6 +452,7 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <button class="side-icon has-tip active" data-tip="Pedidos" id="btn-orders">📦</button>
+      <button class="side-icon has-tip" data-tip="Rotas" id="btn-rotas">🗺️</button>
 
       <button class="side-icon has-tip" data-tip="Alocações" id="btn-alocacoes">👥</button>
       <button class="side-icon has-tip" data-tip="Admin Vagas" id="btn-admin-vagas">🗓️</button>
@@ -285,9 +489,24 @@
           </section>
         </div>
 
+        <!-- VIEW: Rotas -->
+        <div id="left-rotas" class="left-view hidden">
+          <div class="auto-accept">
+            <span>Gestão de Rotas</span>
+          </div>
 
+          <div class="search-row">
+            <button class="btn btn-primary" onclick="abrirModalCriarRota()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <span>🗺️</span>
+              <span>Criar Nova Rota</span>
+            </button>
+          </div>
 
-
+          <section class="section section--scroll">
+            <div class="section-title">Rotas Ativas <span class="badge" id="count-rotas">0</span></div>
+            <div class="list" id="list-rotas"></div>
+          </section>
+        </div>
 
         <!-- VIEW: Alocações (motoboys alocados) -->
         <div id="left-alocacoes" class="left-view hidden">
@@ -416,6 +635,9 @@
 
   <!-- Carrega o módulo de integração de vagas ANTES dos outros scripts -->
   <script src="vagasIntegration.js"></script>
+  
+  <!-- Configuração da API para comunicação com o backend -->
+  <script src="../src/apiConfig.js"></script>
 
   <!-- Sistema de login da aplicação -->
   <script>
@@ -704,12 +926,22 @@
         <div class="card order-card" data-oid="${o.id}" style="cursor:pointer">
           <div class="row-top"><span class="order-id">#${o.id}</span><span class="order-name">${o.cliente}</span></div>
           <div class="badge-status badge-preparo"><span class="dot"></span> ${o.status}</div>
+          <div style="margin-top: 8px;">
+            <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); adicionarPedidoARota(${o.id}, '${o.cliente}');" style="font-size: 11px; padding: 4px 8px;">
+              📦 Adicionar à Rota
+            </button>
+          </div>
         </div>`).join("");
 
       entr.innerHTML=ordersDataEntrega.map(o=>`
         <div class="card order-card" data-oid="${o.id}" style="cursor:pointer">
           <div class="row-top"><span class="order-id">#${o.id}</span><span class="order-name">${o.cliente}</span></div>
           <div class="badge-status badge-entrega"><span class="dot"></span> ${o.status}</div>
+          <div style="margin-top: 8px;">
+            <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); adicionarPedidoARota(${o.id}, '${o.cliente}');" style="font-size: 11px; padding: 4px 8px;">
+              📦 Adicionar à Rota
+            </button>
+          </div>
         </div>`).join("");
 
       document.querySelectorAll(".order-card").forEach(el=>{
@@ -812,6 +1044,702 @@
   
   <!-- Carrega o módulo de Alocações de arquivo externo -->
   <script src="alocacoesIntegration.js"></script>
+
+  <!-- Script para Sistema de Rotas -->
+  <script>
+    // Variáveis globais para o sistema de rotas
+    let pedidosSelecionados = [];
+    let motoboysDisponiveis = [];
+    let pedidosDisponiveis = [];
+
+    // Função para adicionar pedido à rota
+    function adicionarPedidoARota(pedidoId, clienteNome) {
+      // Verificar se o pedido já está selecionado
+      if (pedidosSelecionados.find(p => p.id === pedidoId)) {
+        alert('Este pedido já está na rota!');
+        return;
+      }
+      
+      // Adicionar pedido à lista
+      pedidosSelecionados.push({
+        id: pedidoId,
+        cliente: clienteNome
+      });
+      
+      // Atualizar interface
+      atualizarInterfaceRota();
+      
+      // Abrir modal se não estiver aberto
+      const modal = document.getElementById('modalCriarRota');
+      if (modal && modal.style.display === 'none') {
+        abrirModalCriarRota();
+      }
+    }
+
+    // Função para abrir o modal de criação de rota
+    async function abrirModalCriarRota() {
+      const modal = document.getElementById('modalCriarRota');
+      if (!modal) {
+        return;
+      }
+      
+      // Limpar seleções anteriores
+      const observacoesInput = document.getElementById('observacoesRota');
+      if (observacoesInput) {
+        observacoesInput.value = '';
+      }
+      
+      // Atualizar interface
+      atualizarInterfaceRota();
+      
+      // Carregar dados
+      try {
+        await carregarPedidosDisponiveis();
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      }
+      
+      // Mostrar modal
+      modal.style.display = 'block';
+    }
+
+    // Função para fechar o modal de criação de rota
+    function fecharModalCriarRota() {
+      document.getElementById('modalCriarRota').style.display = 'none';
+      pedidosSelecionados = [];
+    }
+
+    // Função para atualizar a interface da rota
+    function atualizarInterfaceRota() {
+      const contador = document.getElementById('contadorPedidos');
+      const container = document.getElementById('pedidosSelecionados');
+      const btnCriar = document.getElementById('btnCriarRota');
+      
+      if (!contador || !container || !btnCriar) {
+        return;
+      }
+      
+      // Atualizar contador
+      contador.textContent = pedidosSelecionados.length;
+      
+      // Atualizar lista de pedidos selecionados
+      if (pedidosSelecionados.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; color: #6b7280; padding: 20px;">
+            Nenhum pedido selecionado
+          </div>
+        `;
+      } else {
+        container.innerHTML = pedidosSelecionados.map((pedido, index) => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; margin-bottom: 4px; background: white; border-radius: 4px; border: 1px solid #e5e7eb;">
+            <div>
+              <div style="font-weight: 600; font-size: 13px;">#${pedido.id} - ${pedido.cliente}</div>
+              <div style="font-size: 11px; color: #6b7280;">Ordem: ${index + 1}</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="removerPedidoRota(${pedido.id})" style="font-size: 10px; padding: 2px 6px;">
+              ❌
+            </button>
+          </div>
+        `).join('');
+      }
+      
+      // Habilitar/desabilitar botão de criar rota
+      const podeCriar = pedidosSelecionados.length > 0;
+      btnCriar.disabled = !podeCriar;
+    }
+
+    // Função para remover pedido da rota
+    function removerPedidoRota(pedidoId) {
+      pedidosSelecionados = pedidosSelecionados.filter(p => p.id !== pedidoId);
+      atualizarInterfaceRota();
+    }
+
+    // Função para limpar todos os pedidos da rota
+    function limparPedidosRota() {
+      pedidosSelecionados = [];
+      atualizarInterfaceRota();
+    }
+
+
+
+
+
+
+
+    // Array para armazenar IDs de pedidos já roteirizados
+    let pedidosRoteirizados = JSON.parse(localStorage.getItem('pedidosRoteirizados') || '[]');
+
+    // Função para marcar pedidos como roteirizados
+    function marcarPedidosComoRoteirizados(pedidos) {
+      const idsParaMarcar = pedidos.map(p => p.id);
+      pedidosRoteirizados = [...new Set([...pedidosRoteirizados, ...idsParaMarcar])];
+      localStorage.setItem('pedidosRoteirizados', JSON.stringify(pedidosRoteirizados));
+      
+      // Limpar seleções
+      pedidosSelecionados = [];
+      
+      // Atualizar interface
+      atualizarInterfaceRota();
+      carregarPedidosDisponiveis();
+    }
+
+    // Função para limpar pedidos roteirizados (para testes)
+    function limparPedidosRoteirizados() {
+      if (confirm('🗑️ Deseja limpar todos os pedidos roteirizados? Isso permitirá que eles sejam usados novamente em novas rotas.')) {
+        pedidosRoteirizados = [];
+        localStorage.setItem('pedidosRoteirizados', JSON.stringify(pedidosRoteirizados));
+        carregarPedidosDisponiveis();
+        alert('✅ Pedidos roteirizados limpos com sucesso!');
+      }
+    }
+
+    // Função para carregar pedidos disponíveis
+    async function carregarPedidosDisponiveis() {
+      const listaContainer = document.getElementById('listaPedidosDisponiveis');
+      
+      try {
+        listaContainer.innerHTML = `
+          <div style="text-align: center; color: #6b7280; padding: 20px;">
+            <div>🔄 Carregando pedidos disponíveis...</div>
+          </div>
+        `;
+
+        // Fazer requisição para a API de pedidos disponíveis
+        const data = await API_SERVICE.pedidosDisponiveis(11);
+        
+        if (data.success) {
+          // Filtrar pedidos já roteirizados
+          const todosPedidos = data.pedidos || [];
+          pedidosDisponiveis = todosPedidos.filter(pedido => !pedidosRoteirizados.includes(pedido.id));
+          renderizarListaPedidosDisponiveis();
+        } else {
+          throw new Error(data.error || 'Erro ao carregar pedidos');
+        }
+        
+      } catch (error) {
+        console.error('Erro ao carregar pedidos:', error);
+        
+        // Usar dados de exemplo para demonstração
+        const todosPedidosExemplo = [
+          {
+            id: 101,
+            cliente: "João da Silva",
+            endereco: "Rua das Flores, 123 - Centro",
+            status: "preparo",
+            valor_total: 45.90,
+            itens_count: 3
+          },
+          {
+            id: 102,
+            cliente: "Maria Santos",
+            endereco: "Av. Principal, 456 - Jardim",
+            status: "pronto",
+            valor_total: 32.50,
+            itens_count: 2
+          },
+          {
+            id: 103,
+            cliente: "Pedro Oliveira",
+            endereco: "Rua do Comércio, 789 - Vila",
+            status: "preparo",
+            valor_total: 67.80,
+            itens_count: 4
+          },
+          {
+            id: 104,
+            cliente: "Ana Costa",
+            endereco: "Rua das Palmeiras, 321 - Bairro",
+            status: "pronto",
+            valor_total: 28.90,
+            itens_count: 2
+          },
+          {
+            id: 105,
+            cliente: "Carlos Ferreira",
+            endereco: "Av. das Indústrias, 654 - Zona Industrial",
+            status: "preparo",
+            valor_total: 89.50,
+            itens_count: 5
+          }
+        ];
+        
+        // Filtrar pedidos já roteirizados
+        pedidosDisponiveis = todosPedidosExemplo.filter(pedido => !pedidosRoteirizados.includes(pedido.id));
+        
+        renderizarListaPedidosDisponiveis();
+        
+        // Mostrar aviso de que são dados de demonstração
+        const listaContainer = document.getElementById('listaPedidosDisponiveis');
+        if (listaContainer) {
+          const aviso = document.createElement('div');
+          aviso.innerHTML = `
+            <div style="text-align: center; color: #f59e0b; padding: 8px; margin-bottom: 12px; background: #fef3c7; border-radius: 4px; font-size: 12px;">
+              📋 Dados de demonstração (API não disponível)
+            </div>
+          `;
+          listaContainer.insertBefore(aviso, listaContainer.firstChild);
+        }
+      }
+    }
+
+    // Função para renderizar lista de pedidos disponíveis
+    function renderizarListaPedidosDisponiveis() {
+      const listaContainer = document.getElementById('listaPedidosDisponiveis');
+      
+      if (pedidosDisponiveis.length === 0) {
+        listaContainer.innerHTML = `
+          <div style="text-align: center; color: #6b7280; padding: 20px;">
+            <div>⚠️ Nenhum pedido disponível no momento</div>
+            <div style="font-size: 12px; margin-top: 8px;">Todos os pedidos já estão em rotas</div>
+          </div>
+        `;
+        return;
+      }
+
+      listaContainer.innerHTML = pedidosDisponiveis.map(pedido => {
+        const jaSelecionado = pedidosSelecionados.find(p => p.id === pedido.id);
+        const statusColor = pedido.status === 'pronto' ? '#22c55e' : '#f59e0b';
+        
+        return `
+          <div class="pedido-item" data-pedido-id="${pedido.id}" onclick="adicionarPedidoARota(${pedido.id}, '${pedido.cliente}')" style="
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 2px solid ${jaSelecionado ? '#3b82f6' : '#e5e7eb'};
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: ${jaSelecionado ? '#f0f9ff' : 'white'};
+            opacity: ${jaSelecionado ? '0.6' : '1'};
+          ">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div style="flex: 1;">
+                <div style="font-weight: 600; color: #111827; margin-bottom: 4px;">#${pedido.id} - ${pedido.cliente}</div>
+                <div style="font-size: 12px; color: #6b7280; margin-bottom: 2px;">📍 ${pedido.endereco}</div>
+                <div style="font-size: 12px; color: #6b7280; margin-bottom: 2px;">📦 ${pedido.itens_count} itens</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 12px; color: #6b7280; margin-bottom: 2px;">💰 R$ ${pedido.valor_total.toFixed(2)}</div>
+                <div style="font-size: 12px; color: ${statusColor}; font-weight: 600;">● ${pedido.status}</div>
+                ${jaSelecionado ? '<div style="font-size: 11px; color: #3b82f6; font-weight: 600;">✓ Selecionado</div>' : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Função para criar rota
+    async function criarRota() {
+      if (pedidosSelecionados.length === 0) {
+        alert('Selecione pelo menos um pedido para criar a rota');
+        return;
+      }
+
+      const observacoes = document.getElementById('observacoesRota').value;
+      
+      try {
+        // Desabilitar botão durante a requisição
+        const btnCriar = document.getElementById('btnCriarRota');
+        btnCriar.disabled = true;
+        btnCriar.textContent = '🔄 Criando Rota...';
+
+        // Tentar fazer requisição para criar a rota
+        try {
+          const data = await API_SERVICE.criarRota({
+            estabelecimento_id: 11,
+            max_pedidos_por_rota: pedidosSelecionados.length,
+            raio_agrupamento_km: 5.0
+          });
+          
+          if (data.success) {
+            const rotasCriadas = data.rotas_criadas || [];
+            const mensagem = rotasCriadas.length > 0 
+              ? `✅ ${data.message}\n\nRotas criadas:\n${rotasCriadas.map(r => `• Rota #${r.rota_id}: ${r.quantidade_pedidos} pedidos`).join('\n')}`
+              : `✅ ${data.message}`;
+            
+            alert(mensagem);
+            fecharModalCriarRota();
+            
+            // Marcar pedidos como roteirizados e removê-los da lista
+            marcarPedidosComoRoteirizados(pedidosSelecionados);
+            
+            // Atualizar a lista de pedidos
+            if (typeof renderOrdersLists === 'function') {
+              renderOrdersLists();
+            }
+            return;
+          } else {
+            throw new Error(data.error || 'Erro ao criar rota');
+          }
+          
+        } catch (apiError) {
+          // Se a API falhar, simular criação de rota para demonstração
+          console.log('API não disponível, simulando criação de rota...');
+          
+          // Simular delay
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          // Simular resposta de sucesso
+          const rotaId = Math.floor(Math.random() * 1000) + 1;
+          alert(`✅ Rota criada com sucesso!\n\n📋 Rota #${rotaId}\n📦 Pedidos: ${pedidosSelecionados.length}\n📝 Observações: ${observacoes || 'Nenhuma'}\n\n💡 Esta é uma demonstração (API não disponível)`);
+          
+          fecharModalCriarRota();
+          
+          // Marcar pedidos como roteirizados e removê-los da lista
+          marcarPedidosComoRoteirizados(pedidosSelecionados);
+          
+          // Atualizar a lista de pedidos
+          if (typeof renderOrdersLists === 'function') {
+            renderOrdersLists();
+          }
+        }
+        
+      } catch (error) {
+        console.error('Erro ao criar rota:', error);
+        alert(`❌ Erro ao criar rota: ${error.message}`);
+      } finally {
+        // Reabilitar botão
+        const btnCriar = document.getElementById('btnCriarRota');
+        btnCriar.disabled = false;
+        btnCriar.textContent = '🗺️ Criar Rota';
+      }
+    }
+
+    // Função para carregar rotas ativas
+    async function carregarRotasAtivas() {
+      const listaContainer = document.getElementById('list-rotas');
+      const contadorElement = document.getElementById('count-rotas');
+      
+      try {
+        listaContainer.innerHTML = `
+          <div style="text-align: center; color: #6b7280; padding: 20px;">
+            <div>🔄 Carregando rotas ativas...</div>
+          </div>
+        `;
+
+        // Fazer requisição para a API
+        const data = await API_SERVICE.listarRotas();
+        
+        if (data.success) {
+          const rotas = data.rotas || [];
+          
+          // Atualizar contador
+          if (contadorElement) {
+            contadorElement.textContent = rotas.length;
+          }
+          
+          // Renderizar lista de rotas
+          if (rotas.length === 0) {
+            listaContainer.innerHTML = `
+              <div style="text-align: center; color: #6b7280; padding: 20px;">
+                <div>📭 Nenhuma rota ativa encontrada</div>
+                <div style="font-size: 12px; margin-top: 8px;">Crie uma nova rota para começar</div>
+              </div>
+            `;
+          } else {
+            listaContainer.innerHTML = rotas.map(rota => `
+              <div class="card" onclick="verDetalhesRota(${rota.rota_id})" style="cursor: pointer;">
+                <div class="card-header">
+                  <div class="card-title">🗺️ Rota #${rota.rota_id}</div>
+                  <div class="card-status ${rota.status === 'emandamento' ? 'status-active' : 'status-pending'}">
+                    ${rota.status === 'emandamento' ? '🟢 Em Andamento' : '🟡 Pendente'}
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="card-info">
+                    <div><strong>Motoboy:</strong> ${rota.motoboy || 'Não atribuído'}</div>
+                    <div><strong>Pedidos:</strong> ${rota.pedidos_entregues}/${rota.quantidade_pedidos}</div>
+                    <div><strong>Progresso:</strong> ${rota.progresso_percentual}%</div>
+                    <div><strong>Distância:</strong> ${rota.distancia_km} km</div>
+                    <div><strong>Criada:</strong> ${rota.criada_em}</div>
+                  </div>
+                </div>
+              </div>
+            `).join('');
+          }
+        } else {
+          throw new Error(data.error || 'Erro ao carregar rotas');
+        }
+        
+      } catch (error) {
+        console.error('Erro ao carregar rotas:', error);
+        
+        // Mostrar erro
+        listaContainer.innerHTML = `
+          <div style="text-align: center; color: #ef4444; padding: 20px;">
+            <div>❌ Erro ao carregar rotas</div>
+            <div style="font-size: 12px; margin-top: 8px;">${error.message}</div>
+            <button class="btn btn-outline" onclick="carregarRotasAtivas()" style="margin-top: 12px;">
+              🔄 Tentar Novamente
+            </button>
+          </div>
+        `;
+        
+        if (contadorElement) {
+          contadorElement.textContent = '0';
+        }
+      }
+    }
+
+    // Função para ver detalhes de uma rota
+    async function verDetalhesRota(rotaId) {
+      const detailContainer = document.getElementById('detail');
+      
+      try {
+        detailContainer.innerHTML = `
+          <div style="text-align: center; color: #6b7280; padding: 20px;">
+            <div>🔄 Carregando detalhes da rota...</div>
+          </div>
+        `;
+
+        const data = await API_SERVICE.detalhesRota(rotaId);
+        
+        if (data.success) {
+          const rota = data.rota;
+          const estatisticas = data.estatisticas;
+          const entregas = data.entregas;
+          
+          detailContainer.innerHTML = `
+            <div class="detail-header">
+              <h2>🗺️ Rota #${rota.id}</h2>
+              <div class="status-badge ${rota.status}">${rota.status.toUpperCase()}</div>
+            </div>
+            
+            <div class="detail-info">
+              <div class="info-row">
+                <strong>Motoboy:</strong> ${rota.motoboy || 'Não atribuído'}
+              </div>
+              <div class="info-row">
+                <strong>Distância:</strong> ${rota.distancia_km} km
+              </div>
+              <div class="info-row">
+                <strong>Tempo Estimado:</strong> ${rota.tempo_estimado_min} min
+              </div>
+              <div class="info-row">
+                <strong>Criada em:</strong> ${rota.criada_em}
+              </div>
+              ${rota.iniciada_em ? `<div class="info-row"><strong>Iniciada em:</strong> ${rota.iniciada_em}</div>` : ''}
+            </div>
+            
+            <div class="detail-stats">
+              <h3>📊 Estatísticas</h3>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value">${estatisticas.total_pedidos}</div>
+                  <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">${estatisticas.pedidos_entregues}</div>
+                  <div class="stat-label">Entregues</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">${estatisticas.pedidos_em_entrega}</div>
+                  <div class="stat-label">Em Entrega</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">${estatisticas.pedidos_pendentes}</div>
+                  <div class="stat-label">Pendentes</div>
+                </div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: ${estatisticas.progresso_percentual}%"></div>
+                <span class="progress-text">${estatisticas.progresso_percentual}%</span>
+              </div>
+            </div>
+            
+            <div class="detail-deliveries">
+              <h3>📦 Entregas</h3>
+              <div class="deliveries-list">
+                ${entregas.map(entrega => `
+                  <div class="delivery-item">
+                    <div class="delivery-order">${entrega.ordem}</div>
+                    <div class="delivery-info">
+                      <div class="delivery-client">${entrega.cliente}</div>
+                      <div class="delivery-address">${entrega.endereco}</div>
+                      <div class="delivery-value">R$ ${entrega.valor.toFixed(2)}</div>
+                    </div>
+                    <div class="delivery-status ${entrega.status.toLowerCase()}">${entrega.status}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+            
+            <div class="detail-actions">
+              ${rota.status === 'pendente' ? `
+                <button class="btn btn-primary" onclick="iniciarRota(${rota.id})">🚀 Iniciar Rota</button>
+              ` : ''}
+              ${rota.status === 'emandamento' ? `
+                <button class="btn btn-success" onclick="finalizarRota(${rota.id})">✅ Finalizar Rota</button>
+              ` : ''}
+              ${rota.status !== 'concluida' && rota.status !== 'cancelada' ? `
+                <button class="btn btn-danger" onclick="cancelarRota(${rota.id})">❌ Cancelar Rota</button>
+              ` : ''}
+            </div>
+          `;
+          
+          detailContainer.classList.remove("empty");
+        } else {
+          throw new Error(data.error || 'Erro ao carregar detalhes da rota');
+        }
+        
+      } catch (error) {
+        console.error('Erro ao carregar detalhes da rota:', error);
+        detailContainer.innerHTML = `
+          <div style="text-align: center; color: #ef4444; padding: 20px;">
+            <div>❌ Erro ao carregar detalhes da rota</div>
+            <div style="font-size: 12px; margin-top: 8px;">${error.message}</div>
+          </div>
+        `;
+      }
+    }
+
+    // Função para iniciar rota
+    async function iniciarRota(rotaId) {
+      if (!confirm('Deseja iniciar esta rota?')) return;
+      
+      try {
+        const data = await API_SERVICE.iniciarRota(rotaId);
+        
+        if (data.success) {
+          alert(`✅ ${data.message}`);
+          // Recarregar detalhes da rota
+          await verDetalhesRota(rotaId);
+          // Recarregar lista de rotas
+          await carregarRotasAtivas();
+        } else {
+          throw new Error(data.error || 'Erro ao iniciar rota');
+        }
+        
+      } catch (error) {
+        console.error('Erro ao iniciar rota:', error);
+        alert(`❌ Erro ao iniciar rota: ${error.message}`);
+      }
+    }
+
+    // Função para finalizar rota
+    async function finalizarRota(rotaId) {
+      if (!confirm('Deseja finalizar esta rota? Todos os pedidos devem estar entregues.')) return;
+      
+      try {
+        const data = await API_SERVICE.finalizarRota(rotaId);
+        
+        if (data.success) {
+          alert(`✅ ${data.message}`);
+          // Recarregar detalhes da rota
+          await verDetalhesRota(rotaId);
+          // Recarregar lista de rotas
+          await carregarRotasAtivas();
+        } else {
+          throw new Error(data.error || 'Erro ao finalizar rota');
+        }
+        
+      } catch (error) {
+        console.error('Erro ao finalizar rota:', error);
+        alert(`❌ Erro ao finalizar rota: ${error.message}`);
+      }
+    }
+
+    // Função para cancelar rota
+    async function cancelarRota(rotaId) {
+      const motivo = prompt('Motivo do cancelamento:');
+      if (!motivo) return;
+      
+      try {
+        const data = await API_SERVICE.cancelarRota(rotaId, { motivo });
+        
+        if (data.success) {
+          alert(`✅ ${data.message}`);
+          // Recarregar detalhes da rota
+          await verDetalhesRota(rotaId);
+          // Recarregar lista de rotas
+          await carregarRotasAtivas();
+        } else {
+          throw new Error(data.error || 'Erro ao cancelar rota');
+        }
+        
+      } catch (error) {
+        console.error('Erro ao cancelar rota:', error);
+        alert(`❌ Erro ao cancelar rota: ${error.message}`);
+      }
+    }
+
+    // Fechar modais ao clicar fora deles
+    window.onclick = function(event) {
+      const modalCriarRota = document.getElementById('modalCriarRota');
+      const modalSelecaoMotoboy = document.getElementById('modalSelecaoMotoboy');
+      
+      if (event.target === modalCriarRota) {
+        fecharModalCriarRota();
+      }
+      if (event.target === modalSelecaoMotoboy) {
+        fecharModalSelecaoMotoboy();
+      }
+    }
+
+
+  </script>
+
+  <!-- Modal de Criação de Rotas -->
+  <div id="modalCriarRota" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 800px;">
+      <div class="modal-header">
+        <h3>🗺️ Criar Nova Rota (Sem Motoboy)</h3>
+        <span class="close" onclick="fecharModalCriarRota()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <!-- Seção de Pedidos Selecionados -->
+        <div style="margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <label style="font-weight: 600; font-size: 14px;">📦 Pedidos na Rota (<span id="contadorPedidos">0</span>)</label>
+            <button class="btn btn-outline btn-sm" onclick="limparPedidosRota()" style="font-size: 11px; padding: 4px 8px;">
+              🗑️ Limpar Todos
+            </button>
+          </div>
+          <div id="pedidosSelecionados" style="max-height: 150px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px; background: #f8fafc;">
+            <div style="text-align: center; color: #6b7280; padding: 20px;">
+              Nenhum pedido selecionado
+            </div>
+          </div>
+        </div>
+        
+
+        
+        <!-- Seção de Observações -->
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 8px; font-weight: 600;">📝 Observações (opcional):</label>
+          <textarea id="observacoesRota" placeholder="Observações sobre a rota..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; min-height: 60px;"></textarea>
+        </div>
+        
+        <!-- Seção de Pedidos Disponíveis -->
+        <div style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <label style="font-weight: 600;">📋 Pedidos Disponíveis:</label>
+            <div style="display: flex; gap: 4px;">
+              <button class="btn btn-outline btn-sm" onclick="carregarPedidosDisponiveis()" style="font-size: 11px; padding: 4px 8px;">
+                🔄 Atualizar
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="limparPedidosRoteirizados()" style="font-size: 11px; padding: 4px 8px; background: #fef2f2; color: #dc2626; border-color: #fecaca;">
+                🗑️ Limpar Roteirizados
+              </button>
+            </div>
+          </div>
+          <div id="listaPedidosDisponiveis" style="max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px;">
+            <div style="text-align: center; color: #6b7280; padding: 20px;">
+              Carregando pedidos disponíveis...
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="fecharModalCriarRota()">Cancelar</button>
+        <button class="btn btn-primary" id="btnCriarRota" onclick="criarRota()" disabled>
+          🗺️ Criar Rota
+        </button>
+      </div>
+    </div>
+  </div>
+
+
 
   <!-- Função Global para Gerar Vagas Fixas -->
   <script>
@@ -1442,12 +2370,14 @@
     document.addEventListener("DOMContentLoaded", () => {
       const views = {
         orders: document.getElementById("left-orders"),
+        rotas: document.getElementById("left-rotas"),
         alocacoes: document.getElementById("left-alocacoes"),
         adminV: document.getElementById("left-admin-vagas"),
         encerrarVagas: document.getElementById("left-encerrar-vagas"),
       };
       const buttons = {
         orders: document.getElementById("btn-orders"),
+        rotas: document.getElementById("btn-rotas"),
         alocacoes: document.getElementById("btn-alocacoes"),
         adminV: document.getElementById("btn-admin-vagas"),
         encerrarVagas: document.getElementById("btn-encerrar-vagas"),
@@ -1465,6 +2395,21 @@
         const d=document.getElementById("detail");
         d.classList.add("empty");
         d.textContent="Selecione um pedido para ver detalhes";
+      });
+
+      buttons.rotas.addEventListener("click", async () => {
+        showView("rotas");
+        
+        // Carregar rotas ativas
+        try {
+          await carregarRotasAtivas();
+        } catch (error) {
+          console.error('❌ Erro ao carregar rotas:', error);
+        }
+        
+        const d=document.getElementById("detail");
+        d.classList.add("empty");
+        d.textContent="Selecione uma rota para ver detalhes";
       });
 
 

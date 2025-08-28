@@ -23,35 +23,91 @@ let ESTABELECIMENTO_CONFIG = {
 let win: BrowserWindow | null = null;
 
 function resolveIndexHtml() {
-  // Ajuste se seu index.html estiver noutro lugar
-  // Aqui assumo que o arquivo está em <raiz do projeto>/electron/index.html
-  const p = path.resolve(process.cwd(), "electron", "index.html");
-  if (!fs.existsSync(p)) {
-    throw new Error(`index.html não encontrado em: ${p}`);
+  // Verificar se estamos em desenvolvimento ou produção
+  const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
+  
+  console.log(`Modo: ${isDev ? 'Desenvolvimento' : 'Produção'}`);
+  console.log(`isPackaged: ${app.isPackaged}`);
+  console.log(`process.cwd(): ${process.cwd()}`);
+  console.log(`__dirname: ${__dirname}`);
+  console.log(`process.resourcesPath: ${process.resourcesPath}`);
+  
+  let p: string;
+  if (isDev) {
+    // Desenvolvimento: procurar em electron/index.html
+    p = path.resolve(process.cwd(), "electron", "index.html");
+  } else {
+    // Produção: procurar em resources/app/electron/index.html
+    p = path.resolve(process.resourcesPath, "app", "electron", "index.html");
   }
+  
+  console.log(`Tentando carregar: ${p}`);
+  
+  if (!fs.existsSync(p)) {
+    console.error(`index.html não encontrado em: ${p}`);
+    // Fallback: tentar outros caminhos
+    const fallbackPaths = [
+      path.resolve(__dirname, "..", "electron", "index.html"),
+      path.resolve(__dirname, "..", "..", "electron", "index.html"),
+      path.resolve(process.cwd(), "electron", "index.html"),
+      path.resolve(__dirname, "..", "..", "..", "electron", "index.html"),
+      path.resolve(__dirname, "..", "..", "..", "..", "electron", "index.html")
+    ];
+    
+    for (const fallbackPath of fallbackPaths) {
+      console.log(`Tentando fallback: ${fallbackPath}`);
+      if (fs.existsSync(fallbackPath)) {
+        console.log(`Usando fallback: ${fallbackPath}`);
+        return fallbackPath;
+      }
+    }
+    
+    throw new Error(`index.html não encontrado. Tentou: ${p}`);
+  }
+  
+  console.log(`Carregando index.html de: ${p}`);
   return p;
 }
 
 async function createWindow() {
-  win = new BrowserWindow({
-    width: 1380,
-    height: 880,
-    show: false, // Não mostrar a janela até estar pronta
-    webPreferences: {
-      contextIsolation: true,
-      preload: path.join(__dirname, "preload.js"), // gerado a partir do preload.ts
-    },
-  });
-
-  await win.loadFile(resolveIndexHtml());
-  
-  // Maximizar a janela após carregar o conteúdo
-  win.maximize();
-  
-  // Mostrar a janela após maximizar
-  win.show();
-  
-  win.on("closed", () => (win = null));
+  try {
+    console.log("Criando janela...");
+    
+    win = new BrowserWindow({
+      width: 1380,
+      height: 880,
+      show: false, // Não mostrar a janela até estar pronta
+      webPreferences: {
+        contextIsolation: true,
+        preload: path.join(__dirname, "preload.js"), // gerado a partir do preload.ts
+        nodeIntegration: false,
+      },
+    });
+    
+    console.log("Janela criada, carregando arquivo...");
+    await win.loadFile(resolveIndexHtml());
+    
+    console.log("Arquivo carregado, maximizando...");
+    // Maximizar a janela após carregar o conteúdo
+    win.maximize();
+    
+    console.log("Maximizado, mostrando janela...");
+    // Mostrar a janela após maximizar
+    win.show();
+    
+    console.log("Janela mostrada com sucesso!");
+    
+    win.on("closed", () => (win = null));
+    
+    // Adicionar handler de erro
+    win.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+      console.error(`Falha ao carregar: ${errorCode} - ${errorDescription}`);
+    });
+    
+  } catch (error) {
+    console.error("Erro ao criar janela:", error);
+    throw error;
+  }
 }
 
 // =============== IPC: Configurações e Proxy de API ===============

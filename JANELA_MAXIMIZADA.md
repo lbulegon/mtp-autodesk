@@ -110,3 +110,6 @@ A aplicação Electron agora inicializa com a janela maximizada, proporcionando 
 
 
 
+
+
+
