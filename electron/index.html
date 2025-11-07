@@ -524,6 +524,7 @@
           <div class="search-row" style="margin-bottom: 16px; flex-direction: column; gap: 12px;">
             <div style="display: flex; gap: 8px; align-items: center;">
               <span style="font-weight: 600; color: #333;">📋 Gerar Vagas Fixas</span>
+              <span style="font-size: 10px; color: #999;">(Quantidade fixa)</span>
             </div>
             
             <div style="display: flex; gap: 8px; align-items: center;">
@@ -534,6 +535,28 @@
             <button id="btnGerarVagasFixas" class="btn btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="gerarVagasFixas();">
               <span>🚀</span>
               <span>Gerar Vagas para o Dia</span>
+            </button>
+          </div>
+
+          <!-- Interface Gerar Vagas por Templates -->
+          <div class="search-row" style="margin-bottom: 16px; flex-direction: column; gap: 12px; border-top: 1px solid #e0e0e0; padding-top: 16px;">
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span style="font-weight: 600; color: #2e7d32;">📅 Gerar Vagas por Templates</span>
+              <span style="font-size: 10px; color: #999;">(Por dia da semana)</span>
+            </div>
+            
+            <div style="background: #e8f5e9; padding: 8px; border-radius: 4px; font-size: 11px; color: #2e7d32;">
+              ℹ️ Gera vagas conforme templates configurados (quantidade varia por dia)
+            </div>
+            
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <label style="font-size: 12px; color: #666; min-width: 80px;">Próximos Dias:</label>
+              <input type="number" id="diasTemplates" min="1" max="30" value="7" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
+            </div>
+            
+            <button id="btnGerarVagasTemplates" class="btn btn-success" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #2e7d32;" onclick="gerarVagasPorTemplates();">
+              <span>✨</span>
+              <span>Gerar Vagas Automáticas</span>
             </button>
           </div>
 
@@ -1041,6 +1064,9 @@
 
   <!-- Carrega o módulo Admin Vagas de arquivo externo -->
   <script src="adminvagas.js"></script>
+  
+  <!-- Carrega o módulo de Gerar Vagas por Templates -->
+  <script src="gerarVagasTemplates.js"></script>
   
   <!-- Carrega o módulo de Alocações de arquivo externo -->
   <script src="alocacoesIntegration.js"></script>
